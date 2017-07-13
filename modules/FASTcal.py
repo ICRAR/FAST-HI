@@ -7,14 +7,13 @@
 import time
 import os
 
-def FASTcal(infile_path):
+def FASTcal(infile):
 
-    if os.path.isfile(infile_path) == False:
-        print 'Error: %s does not exist' % (infile_path) 
+    if os.path.isfile(infile) == False:
+        print 'Error: %s does not exist' % (infile) 
         exit()
     
-    datapath = os.path.dirname(infile_path)
-    infile = os.path.basename(infile_path)
+    datapath = os.path.dirname(infile)
     head, tail = os.path.splitext(infile)
     
     # output
@@ -120,7 +119,7 @@ def FASTcal(infile_path):
     # inp
     # Before running, lets save the inputs in case we want
     # to come back and re-run the calibration.
-    saveinputs('sdcal', 'sdcal.' + heads + '.save')
+    saveinputs('sdcal', 'sdcal.' + head + '.save')
     # These can be recovered by
     # execfile 'sdcal.infile.save'
     
