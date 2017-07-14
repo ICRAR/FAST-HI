@@ -1,24 +1,12 @@
 #!/usr/bin/env python
 #####################################
-#
 # FAST-HI Calibration based on CASA-cookbook example
 # Position-Switched data
 #####################################
-import time
 import os
 
-def FASTcal(infile):
+def FASTcal(filename):
 
-    if os.path.isfile(infile) == False:
-        print 'Error: %s does not exist' % (infile) 
-        exit()
-    
-    datapath = os.path.dirname(infile)
-    head, tail = os.path.splitext(infile)
-    
-    # output
-    outfile = head + '.txt'
-    
     # ASAP environment parameters (the ones that are in the .asaprc file).
     # These are in the Python dictionary sd.rcParams
     # You can see whats in it by typing:
@@ -26,38 +14,33 @@ def FASTcal(infile):
     sd.rcParams['verbose'] = True
     sd.rcParams['scantable.storage'] = 'memory'
     
-    ##########################
-    #
-    # Position-Switched data
-    #
-    ##########################
-    startTime = time.time()
-    startProc = time.clock()
-    ##########################
-    # List data
-    ##########################
-    # List the contents of the dataset
-    # First reset parameter defaults (safe)
+    if os.path.isfile(filename) == False:
+        print 'Error: %s does not exist' % (filename) 
+        exit()
+
+    # Use the set sdlist and sdcal tasks to defaults
     default('sdlist')
-    # You can see its inputs with
-    # inp('sdlist')
-    # or just
-    # inp
-    # now that the defaults('sdlist') set the
-    # taskname='sdlist'
+    default('sdcal')
     
+    infile=filename
+    datapath = os.path.dirname(infile)
+    head, tail = os.path.splitext(infile)
+     # Now we give the name for the output file
+    outfile = head + '.calibrateded.ms'
+    # We will write it out in measurement set format
+    outform = 'MS2'
+    #remove if one already exists
+    if os.path.isfile(outfile) == True:
+        os.system('rm -rf ' + outfile)
+    
+    # List the contents of the dataset
     # Set an output file in case we want to refer back to it
     sdlist()
     
     ##########################
     # Calibrate data
     ##########################
-    # Use the sdcal task to calibrate the data. Set the defaults
-    default('sdcal')
-    # You can see the inputs with
-    # inp
-    # Set our infile (which would have been set from our run of
-    # sdlist if we were not cautious and reset defaults).
+
     fluxunit = 'K'
     # Spectral axis in channels for now
     specunit = 'channel'
@@ -111,10 +94,7 @@ def FASTcal(infile):
     # or even
     # plotlevel = 2
     # to see intermediate plots and baselining output.
-    # Now we give the name for the output file
-    outfile = head + '.calibrateded.ms'
-    # We will write it out in measurement set format
-    outform = 'ms'
+
     # You can look at the inputs with
     # inp
     # Before running, lets save the inputs in case we want
