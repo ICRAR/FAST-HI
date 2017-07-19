@@ -42,6 +42,8 @@ def FASTcal(filename):
     # Set an output file in case we want to refer back to it
     sdlist()
     
+    print 'point1'
+    
     ##########################
     # Calibrate data
     ##########################
