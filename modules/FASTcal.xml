@@ -9,7 +9,7 @@ file:///opt/casa/code/xmlcasa/xml/casa.xsd">
 <shortdescription> FAST-HI calibration CASA-ASAP pipeline task </shortdescription>
 <input>  <param type="string" name="filename" mustexist="true">
 <description>Input SDFITS file name</description>
-<value>../ALFALFA/wapp.20100920.a2010.0023.fits</value>
+<value>/home/slava/ALFALFA/wapp.20100920.a2010.0023.fits</value>
 </param>
 </input>
 
