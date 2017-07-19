@@ -2,6 +2,9 @@
 #####################################
 # FAST-HI Calibration CASA task script
 # Position-Switched data
+#
+#This needs to be turned into CASA task
+#buildmytasks FASTcal
 #####################################
 import os
 from taskinit import *
