@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 #####################################
-# FAST-HI Calibration based on CASA-cookbook example
+# FAST-HI Calibration CASA task script
 # Position-Switched data
 #####################################
 import os
+from taskinit import *
+import time
 
 def FASTcal(filename):
 
