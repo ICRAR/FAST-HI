@@ -27,18 +27,6 @@ import os
 
 from casa_code.echo import echo
 
-INPUT_MS_SUFFIX = '_calibrated_deepfield.ms'
-
-
-@echo
-def find_file(top_dir):
-    for file_name in os.listdir(top_dir):
-        if file_name.endswith(INPUT_MS_SUFFIX):
-            return os.path.join(top_dir, file_name)
-
-    return None
-
-
 @echo
 def parse_args():
     parser = argparse.ArgumentParser('Get the arguments')
