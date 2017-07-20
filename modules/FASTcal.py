@@ -28,8 +28,8 @@
 import os
 import logging
 
-from modules.casa_common import parse_args
-from modules.echo import echo
+from casa_common import parse_args
+from echo import echo
 
 LOG_FILENAME = 'FASTcal.log'
 LOG = logging.getLogger('FASTcal')
