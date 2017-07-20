@@ -35,24 +35,26 @@ casalog.filter('DEBUGGING')
 logging.info('Starting logger for...')
 LOG = logging.getLogger('FASTcal')
 
-def FASTcal(filename):
+def FASTcal(infile):
 
     # ASAP environment parameters (the ones that are in the .asaprc file).
     # These are in the Python dictionary sd.rcParams
     # You can see whats in it by typing:
     # sd.rcParams
+ 
+    LOG.info('FASTcal(FITSname={1})' % (infile))
+    
     sd.rcParams['verbose'] = True
     sd.rcParams['scantable.storage'] = 'memory'
     
-    if os.path.isfile(filename) == False:
-        print 'Error: %s does not exist' % (filename) 
+    if os.path.isfile(infile) == False:
+        LOG.exception('Error:' + filename + 'does not exist')  
         exit()
 
     # Use the set sdlist and sdcal tasks to defaults
     default('sdlist')
     default('sdcal')
     
-    infile=filename
     datapath = os.path.dirname(infile)
     head, tail = os.path.splitext(infile)
      # Now we give the name for the output file
@@ -141,3 +143,11 @@ def FASTcal(filename):
 if __name__ == "__main__":
     args = parse_args()
     LOG.info(args)
+    
+    infile=args.arguments[0]
+    
+    if os.path.isfile(infile) == False:
+        LOG.exception('Error:' + filename + 'does not exist. Abort.') 
+        exit()
+        
+    FASTcal(infile)
