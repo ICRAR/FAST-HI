@@ -31,9 +31,12 @@ import logging
 from casa_common import parse_args
 #from echo import echo
 
-log = logging.getLogger('FASTcal')
-log.setLevel(logging.DEBUG)
-log.basicConfig(filename=__name__, level=logging.DEBUG, filemode='w')
+logging.basicConfig(filename=__name__, level=logging.DEBUG)
+#logging.setLevel(logging.DEBUG)
+
+log = logging.getLogger(__name__)
+
+#log.basicConfig(filename=__name__, level=logging.DEBUG, filemode='w')
 casalog.filter('DEBUGGING')
 log.info('Starting logger for...')
 
