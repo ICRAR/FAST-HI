@@ -28,16 +28,15 @@
 import os
 import logging
 
+print "FASTcal execution..."
+
 from casa_common import parse_args
-#from echo import echo
 
 logging.basicConfig(filename=__name__, level=logging.DEBUG)
-#logging.setLevel(logging.DEBUG)
-
 log = logging.getLogger(__name__)
 
-#log.basicConfig(filename=__name__, level=logging.DEBUG, filemode='w')
 casalog.filter('DEBUGGING')
+
 log.info('Starting logger for...')
 
 def FASTcal(infile):
