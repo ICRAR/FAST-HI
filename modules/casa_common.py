@@ -26,7 +26,7 @@
 import argparse
 import os
 
-from casa_code.echo import echo
+from echo import echo
 
 @echo
 def parse_args():

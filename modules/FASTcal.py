@@ -28,14 +28,14 @@
 import os
 import logging
 
-from modules.casa_common import parse_args
-from modules.echo import echo
+from casa_common import parse_args
+#from echo import echo
 
-LOG_FILENAME = 'FASTcal.log'
-LOG = logging.getLogger('FASTcal')
-LOG.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG, filemode='w')
+log = logging.getLogger('FASTcal')
+log.setLevel(logging.DEBUG)
+log.basicConfig(filename=__name__, level=logging.DEBUG, filemode='w')
 casalog.filter('DEBUGGING')
-LOG.info('Starting logger for...')
+log.info('Starting logger for...')
 
 def FASTcal(infile):
 
@@ -44,13 +44,13 @@ def FASTcal(infile):
     # You can see whats in it by typing:
     # sd.rcParams
  
-    LOG.info('FASTcal(FITSname={1})' % (infile))
+    log.info('FASTcal(FITSname={1})' % (infile))
     
     sd.rcParams['verbose'] = True
     sd.rcParams['scantable.storage'] = 'memory'
     
     if os.path.isfile(infile) == False:
-        LOG.exception('Error:' + filename + 'does not exist')  
+        log.exception('Error:' + filename + 'does not exist')  
         exit()
 
     # Use the set sdlist and sdcal tasks to defaults
@@ -144,12 +144,12 @@ def FASTcal(infile):
     
 if __name__ == "__main__":
     args = parse_args()
-    LOG.info(args)
+    log.info(args)
     
     infile=args.arguments[0]
     
     if os.path.isfile(infile) == False:
-        LOG.exception('Error:' + filename + 'does not exist. Abort.') 
+        log.exception('Error:' + filename + 'does not exist. Abort.') 
         exit()
         
     FASTcal(infile)
