@@ -71,7 +71,7 @@ def FASTcal(infile):
     
     # List the contents of the dataset
     # Set an output file in case we want to refer back to it
-    sdlist()
+    sdlist(infile=infile)
     
     print 'point1'
     
@@ -154,4 +154,4 @@ if __name__ == "__main__":
         log.exception('Error:' + filename + 'does not exist. Abort.') 
         exit()
         
-    FASTcal(infile)
+    FASTcal(infile=infile)
