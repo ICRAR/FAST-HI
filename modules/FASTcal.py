@@ -60,16 +60,8 @@ def FASTcal(infile):
     default('sdcal')
     
     datapath = os.path.dirname(infile)
-<<<<<<< HEAD
-    head, tail = os.path.splitext(infile)
-
-=======
     head, tail = os.path.splitext(os.path.basename(infile))
-     # Now we give the name for the output file
-    outfile = head + '.calibrateded.ms'
-    # We will write it out in measurement set format
-    outform = 'MS2'
->>>>>>> origin/master
+
     #remove if one already exists
     if os.path.isfile(outfile) == True:
         os.system('rm -rf ' + outfile)
