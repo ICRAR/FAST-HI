@@ -142,7 +142,7 @@ def FASTcal(infile):
     # execfile 'sdcal.infile.save'
     
     # Finallly calibrate
-    sdcal()
+    sdcal(infile=infile)
     
 if __name__ == "__main__":
     args = parse_args()
@@ -154,4 +154,4 @@ if __name__ == "__main__":
         log.exception('Error:' + filename + 'does not exist. Abort.') 
         exit()
         
-    FASTcal(infile=infile)
+    FASTcal(infile)
