@@ -46,7 +46,7 @@ def FASTcal(infile):
     # You can see whats in it by typing:
     # sd.rcParams
  
-    log.info('FASTcal(FITSname={1})' % (infile))
+    log.info('FASTcal(FITSname=%s)', infile)
     
     sd.rcParams['verbose'] = True
     sd.rcParams['scantable.storage'] = 'memory'
