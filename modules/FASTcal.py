@@ -32,7 +32,7 @@ import argparse
 logging.basicConfig(filename=__name__, level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
-casalog.filter('DEBUGGING')
+#casalog.filter('DEBUGGING')
 
 log.info('Starting logger for...')
 
@@ -129,7 +129,7 @@ if __name__ == "__main__":
     
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config", help="Configuration file for the spectral-line data reduction pipeline")
-    parser.add_argument("-i", "--infile", required=True, help="Uncalibrated observation data")
+    parser.add_argument("-i", "--infile", help="Uncalibrated observation data")
     args = parser.parse_args()
     log.info(args)
     
@@ -140,8 +140,8 @@ if __name__ == "__main__":
             log.exception('Error: Configuration ' + args.config + ' does not exist. Abort.') 
             exit()
     else: 
-        if os.path.isfile(CONFIG_DEFAULT) == True:
-            config_file=CONFIG_DEFAULT
+        if os.path.isfile(CONFIG_DEFAULT_FILE) == True:
+            config_file=CONFIG_DEFAULT_FILE
         else:
             write_default_config()
             log.info('Check configuration and re-run the module.')
@@ -150,8 +150,13 @@ if __name__ == "__main__":
     # read configuration file
     config.read(config_file)
 
-    if os.path.isfile(args.infile) == False:
-        log.exception('Error: ' + filename + ' does not exist. Abort.') 
+    if args.infile:
+        if os.path.isfile(args.infile) == False:
+            log.exception('Error: ' + filename + ' does not exist. Abort.') 
+            exit()
+    else:
+        log.info('Infile needs to be provided. Use -i or --infile.')
         exit()
+        
         
     FASTcal(infile=args.infile)
