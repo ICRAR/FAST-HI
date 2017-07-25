@@ -29,12 +29,15 @@ import logging
 import ConfigParser
 import argparse
 
-logging.basicConfig(filename=__name__, level=logging.DEBUG)
-log = logging.getLogger(__name__)
+module_name = 'FASTcal'
+log_name = module_name+'.log'
+
+logging.basicConfig(filename=log_name, level=logging.DEBUG)
+log = logging.getLogger(log_name)
 
 #casalog.filter('DEBUGGING')
 
-log.info('Starting logger for...')
+log.info('Starting logger for ' + module_name)
 
 #config file
 CONFIG_DEFAULT_FILE="calibr.cfg"
@@ -133,29 +136,29 @@ if __name__ == "__main__":
     args = parser.parse_args()
     log.info(args)
     
+    config_file = CONFIG_DEFAULT_FILE
     if args.config:
         if os.path.isfile(args.config) == True:
             config_file=args.config
         else:
-            log.exception('Error: Configuration ' + args.config + ' does not exist. Abort.') 
+            log.exception('Configuration ' + args.config + ' does not exist.') 
             exit()
     else: 
-        if os.path.isfile(CONFIG_DEFAULT_FILE) == True:
-            config_file=CONFIG_DEFAULT_FILE
-        else:
+        if os.path.isfile(config_file) == False:
             write_default_config()
             log.info('Check configuration and re-run the module.')
             exit()         
 
     # read configuration file
+    log.info('Using configuration from ' + config_file)
     config.read(config_file)
 
     if args.infile:
         if os.path.isfile(args.infile) == False:
-            log.exception('Error: ' + filename + ' does not exist. Abort.') 
+            log.exception(filename + ' does not exist.') 
             exit()
     else:
-        log.info('Infile needs to be provided. Use -i or --infile.')
+        log.info('Infile must to be provided. Use -i or --infile.')
         exit()
         
         
