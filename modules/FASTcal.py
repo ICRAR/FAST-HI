@@ -25,6 +25,7 @@
 # FAST-HI Calibration module
 #####################################
 import os
+import sys
 import logging
 import ConfigParser
 import argparse
@@ -142,12 +143,12 @@ if __name__ == "__main__":
             config_file=args.config
         else:
             log.exception('Configuration ' + args.config + ' does not exist.') 
-            exit()
+            sys.exit()
     else: 
         if os.path.isfile(config_file) == False:
             write_default_config()
             log.info('Check configuration and re-run the module.')
-            exit()         
+            sys.exit()         
 
     # read configuration file
     log.info('Using configuration from ' + config_file)
@@ -156,10 +157,10 @@ if __name__ == "__main__":
     if args.infile:
         if os.path.isfile(args.infile) == False:
             log.exception(filename + ' does not exist.') 
-            exit()
+            sys.exit()
     else:
         log.info('Infile must to be provided. Use -i or --infile.')
-        exit()
+        sys.exit()
         
         
     FASTcal(infile=args.infile)
