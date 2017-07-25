@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+####################################
 #
 #    ICRAR - International Centre for Radio Astronomy Research
 #    (c) UWA - The University of Western Australia
@@ -20,17 +22,12 @@
 #    MA 02111-1307  USA
 #
 #####################################
-# FAST-HI Calibration CASA task script
-# Position-Switched data
-#
-
+# FAST-HI Calibration module
 #####################################
 import os
 import logging
-
-print "FASTcal execution..."
-
-from casa_common import parse_args
+import ConfigParser
+import argparse
 
 logging.basicConfig(filename=__name__, level=logging.DEBUG)
 log = logging.getLogger(__name__)
@@ -39,23 +36,16 @@ casalog.filter('DEBUGGING')
 
 log.info('Starting logger for...')
 
-def FASTcal(infile):
+#config file
+CONFIG_DEFAULT_FILE="calibr.cfg"
+config = ConfigParser.RawConfigParser()
 
-    # ASAP environment parameters (the ones that are in the .asaprc file).
-    # These are in the Python dictionary sd.rcParams
-    # You can see whats in it by typing:
-    # sd.rcParams
- 
-    log.info('FASTcal(FITSname=%s)', infile)
+def FASTcal(infile):
+    log.info('FASTcal(Calibrating observations file: %s)', infile)
     
     sd.rcParams['verbose'] = True
     sd.rcParams['scantable.storage'] = 'memory'
-    
-    if os.path.isfile(infile) == False:
-        log.exception('Error:' + filename + 'does not exist')  
-        exit()
-
-    # Use the set sdlist and sdcal tasks to defaults
+    #initialise
     default('sdlist')
     default('sdcal')
     
@@ -68,8 +58,11 @@ def FASTcal(infile):
     
     # List the contents of the dataset
     # Set an output file in case we want to refer back to it
-    sdlist(infile=infile)
-    
+    #sdlist(infile=infile)
+
+    #maybe later
+    #listobs(vis='uid___A002_X85c183_X36f.ms',
+    #    listfile='uid___A002_X85c183_X36f.ms.listobs')
     ##########################
     # Calibrate data
     ##########################
@@ -80,35 +73,17 @@ def FASTcal(infile):
     
     # Finallly calibrate
     sdcal(infile=infile, 
-        fluxunit = 'K', 
-        specunit = 'channel',     
-        timeaverage = False, 
-        tweight = 'tintsys',
-        polaverage = True,
-        pweight = 'tsys',
-        tau = 0.09,
-        # This is position-switched mode
-        calmode = 'ps',
-        # It is safest to not have scantable pre-average integrations within scans.
-        average = True,
-        scanaverage = False,
+        fluxunit = config.get('Calibration', 'fluxunit'), 
+        specunit = config.get('Calibration', 'specunit'),     
+        timeaverage = config.getbool('Calibration', 'timeaverage'), 
+        polaverage = config.getbool('Calibration', 'polaverage'),
+        tau = config.getfloat('Calibration', 'tau'),
+        calmode = config.get('Calibration', 'calmode'),
+        average = config.getfloat('Calibration', 'avarage'),
+        scanaverage = config.getfloat('Calibration', 'scanaverage'),
         # Overwrite the output
         overwrite = True,
-        # By default, we will not get plots in sdcal (but can make them using sdplot).
-        # But if you wish to see a final spectrum, set
-        # plotlevel = 1
-        # or even
-        # plotlevel = 2
-        # to see intermediate plots and baselining output.
         plotlevel = 0,
-        # We do not require selection by field name (they are all
-        # the same except for on and off)
-        field = '',
-        # Spectral smoothing using boxcar smoothing rather than the default
-        # kernel='hanning'
-        kernel = 'boxcar',
-        # We will set the width of the kernel to 5 channels
-        kwidth = 5,
         # We wish to fit out a baseline from the spectrum
         # We will let ASAP use auto_poly_baseline mode
         # but tell it to drop the 500 edge channels from
@@ -126,19 +101,57 @@ def FASTcal(infile):
         scanlist = [20, 21, 22, 23],
         iflist = [0],
         # Now we give the name for the output file
-        outfile = head + '.calibrateded.ms',
+        outfile = head + config.get('Calibration', 'outfile_ext'),
         # We will write it out in measurement set format
-        outform = 'MS2'
+        outform = config.get('Calibration', 'out_format')
         )
     
+def write_default_config():
+    config.add_section('Calibration')
+    config.set('Calibration', 'fluxunit', 'K')
+    config.set('Calibration', 'specunit', 'channel') 
+    config.set('Calibration', 'timeaverage', 'False') 
+    config.set('Calibration', 'polaverage', 'True') 
+    config.set('Calibration', 'tau', '0.09') 
+    config.set('Calibration', 'calmode', 'ps')
+    config.set('Calibration', 'avarage', 'True')
+    config.set('Calibration', 'scanaverage', 'True')
+    config.set('Calibration', 'overwrite', 'True')
+    config.set('Calibration', 'plotlevel', '0')
+    config.set('Calibration', 'outfile_ext', '.calibrateded.ms')
+    config.set('Calibration', 'out_format', 'MS2')
+# Writing our configuration file
+    with open(CONFIG_DEFAULT_FILE, 'wb') as configfile:
+        config.write(configfile)
+    log.info('No configuration file found. Default configuration file has been created: ' + CONFIG_DEFAULT_FILE)
+    
 if __name__ == "__main__":
-    args = parse_args()
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--config", help="Configuration file for the spectral-line data reduction pipeline")
+    parser.add_argument("-i", "--infile", required=True, help="Uncalibrated observation data")
+    args = parser.parse_args()
     log.info(args)
     
-    infile=args.arguments[0]
-    
-    if os.path.isfile(infile) == False:
-        log.exception('Error:' + filename + 'does not exist. Abort.') 
+    if args.config:
+        if os.path.isfile(args.config) == True:
+            config_file=args.config
+        else:
+            log.exception('Error: Configuration ' + args.config + ' does not exist. Abort.') 
+            exit()
+    else: 
+        if os.path.isfile(CONFIG_DEFAULT) == True:
+            config_file=CONFIG_DEFAULT
+        else:
+            write_default_config()
+            log.info('Check configuration and re-run the module.')
+            exit()         
+
+    # read configuration file
+    config.read(config_file)
+
+    if os.path.isfile(args.infile) == False:
+        log.exception('Error: ' + filename + ' does not exist. Abort.') 
         exit()
         
-    FASTcal(infile)
+    FASTcal(infile=args.infile)
