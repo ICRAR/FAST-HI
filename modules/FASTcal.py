@@ -38,7 +38,7 @@ log = logging.getLogger(log_name)
 
 #casalog.filter('DEBUGGING')
 
-log.info('Starting logger for ' + module_name)
+log.info('---Starting logger for ' + module_name)
 
 #config file
 CONFIG_DEFAULT_FILE="calibr.cfg"
