@@ -77,18 +77,18 @@ def FASTcal(infile):
 
     # Finallly calibrate
     sdcal(infile=infile,
-        fluxunit = config.get('Calibration', 'fluxunit'),
-        specunit = config.get('Calibration', 'specunit'),
-        timeaverage = config.getboolean('Calibration', 'timeaverage'),
-        polaverage = config.getboolean('Calibration', 'polaverage'),
-        tau = config.getfloat('Calibration', 'tau'),
+        #fluxunit = config.get('Calibration', 'fluxunit'),
+        #specunit = config.get('Calibration', 'specunit'),
+        #timeaverage = config.getboolean('Calibration', 'timeaverage'),
+        #polaverage = config.getboolean('Calibration', 'polaverage'),
+        #tau = config.getfloat('Calibration', 'tau'),
         calmode = config.get('Calibration', 'calmode'),
-        average = config.getboolean('Calibration', 'average'),
-        scanaverage = config.getboolean('Calibration', 'scanaverage'),
+        #average = config.getboolean('Calibration', 'average'),
+        #scanaverage = config.getboolean('Calibration', 'scanaverage'),
 
         # Overwrite the output
         overwrite = True,
-        plotlevel = 0,
+        #plotlevel = 0,
 
         # We wish to fit out a baseline from the spectrum
         # We will let ASAP use auto_poly_baseline mode
@@ -96,24 +96,26 @@ def FASTcal(infile):
         # the beginning and end of the spectrum.
         # A 2nd-order polynomial will suffice for this test.
         # You might try higher orders for fun.
-        blmode = 'auto',
-        blpoly = 2,
-        edge = [500],
+        #blmode = 'auto',
+        #blpoly = 2,
+        #edge = [500],
 
         # We will not give it regions as an input mask
         # though you could, with something like
         # masklist=[[1000,3000],[5000,7000]]
-        masklist = [],
+        #masklist = [],
 
         # Select our scans and IFs
-        scanlist = [20, 21, 22, 23],
-        iflist = [0],
+        # scanlist = [20, 21, 22, 23],
+        # iflist = [0],
+        scan = '20~23',
+        spw = '0',
 
         # Now we give the name for the output file
         outfile = head + config.get('Calibration', 'outfile_ext'),
 
         # We will write it out in measurement set format
-        outform = config.get('Calibration', 'out_format')
+        #outform = config.get('Calibration', 'out_format')
     )
 
 def write_default_config():
