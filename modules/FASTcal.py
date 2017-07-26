@@ -126,7 +126,7 @@ def write_default_config():
     config.set('Calibration', 'timeaverage', 'False')
     config.set('Calibration', 'polaverage', 'True')
     config.set('Calibration', 'tau', '0.09')
-    config.set('Calibration', 'calmode', 'ps')
+    config.set('Calibration', 'calmode', 'otfraster')
     config.set('Calibration', 'average', 'True')
     config.set('Calibration', 'scanaverage', 'True')
     config.set('Calibration', 'overwrite', 'True')
