@@ -109,8 +109,8 @@ def FASTcal(infile):
         # Select our scans and IFs
         # scanlist = [20, 21, 22, 23],
         # iflist = [0],
-        scan = '20~23',
-        spw = '0',
+        #scan = '0',
+        #spw = '0',
 
         # Now we give the name for the output file
         outfile = head + config.get('Calibration', 'outfile_ext'),
