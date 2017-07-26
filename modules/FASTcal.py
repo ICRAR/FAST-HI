@@ -146,7 +146,7 @@ def main():
 
     if not args.infile:
         parser.error('Infile must to be provided. Use -i or --infile.')
-    elif not os.path.isfile(args.infile):
+    elif not os.path.exists(args.infile):
         parser.error('%s does not exist' % filename)
 
     logging.basicConfig(filename=log_name, level=logging.DEBUG)
@@ -160,7 +160,7 @@ def main():
         else:
             log.exception('Configuration ' + args.config + ' does not exist.') 
             sys.exit()
-    else: 
+    else:
         if not os.path.isfile(config_file):
             write_default_config()
             log.info('Check configuration and re-run the module.')
