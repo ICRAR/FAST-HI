@@ -1,3 +1,6 @@
 # Eclipse files
 .pydevproject
 .project
+
+# Python-related
+*.pyc
