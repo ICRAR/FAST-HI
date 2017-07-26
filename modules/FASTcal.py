@@ -52,6 +52,7 @@ def FASTcal(infile):
     default('sdlistold')
     default('sdcal')
 
+    infile = os.path.normpath(infile)
     datapath = os.path.dirname(infile)
     head, tail = os.path.splitext(os.path.basename(infile))
 
