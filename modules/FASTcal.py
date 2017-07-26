@@ -131,7 +131,7 @@ def write_default_config():
     config.set('Calibration', 'scanaverage', 'True')
     config.set('Calibration', 'overwrite', 'True')
     config.set('Calibration', 'plotlevel', '0')
-    config.set('Calibration', 'outfile_ext', '.calibrateded.ms')
+    config.set('Calibration', 'outfile_ext', '.calibrated.ms')
     config.set('Calibration', 'out_format', 'MS2')
 
     # Writing our configuration file
