@@ -49,7 +49,7 @@ def FASTcal(infile):
     sd.rcParams['scantable.storage'] = 'memory'
 
     #initialise
-    default('sdlist')
+    default('sdlistold')
     default('sdcal')
 
     datapath = os.path.dirname(infile)
@@ -79,12 +79,12 @@ def FASTcal(infile):
     sdcal(infile=infile,
         fluxunit = config.get('Calibration', 'fluxunit'),
         specunit = config.get('Calibration', 'specunit'),
-        timeaverage = config.getbool('Calibration', 'timeaverage'),
-        polaverage = config.getbool('Calibration', 'polaverage'),
+        timeaverage = config.getboolean('Calibration', 'timeaverage'),
+        polaverage = config.getboolean('Calibration', 'polaverage'),
         tau = config.getfloat('Calibration', 'tau'),
         calmode = config.get('Calibration', 'calmode'),
-        average = config.getfloat('Calibration', 'average'),
-        scanaverage = config.getfloat('Calibration', 'scanaverage'),
+        average = config.getboolean('Calibration', 'average'),
+        scanaverage = config.getboolean('Calibration', 'scanaverage'),
 
         # Overwrite the output
         overwrite = True,
