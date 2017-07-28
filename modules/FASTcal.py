@@ -29,6 +29,7 @@ import sys
 import logging
 import ConfigParser
 import argparse
+import casadef
 
 module_name = 'FASTcal'
 log_name = module_name+'.log'
@@ -91,7 +92,6 @@ def FASTcal(infile):
         #average = config.getboolean('Calibration', 'average'),
         #scanaverage = config.getboolean('Calibration', 'scanaverage'),
 
-        # Overwrite the output
         overwrite = config.getboolean('Calibration', 'overwrite'),
         fraction = config.get('Calibration', 'fraction'),
         noff = config.getint('Calibration', 'noff'),
@@ -103,29 +103,6 @@ def FASTcal(infile):
         spw = config.get('Calibration', 'spw'),
         scan = config.get('Calibration', 'scan'),
         intent = config.get('Calibration', 'intent'),
-
-        #plotlevel = 0,
-
-        # We wish to fit out a baseline from the spectrum
-        # We will let ASAP use auto_poly_baseline mode
-        # but tell it to drop the 500 edge channels from
-        # the beginning and end of the spectrum.
-        # A 2nd-order polynomial will suffice for this test.
-        # You might try higher orders for fun.
-        #blmode = 'auto',
-        #blpoly = 2,
-        #edge = [500],
-
-        # We will not give it regions as an input mask
-        # though you could, with something like
-        # masklist=[[1000,3000],[5000,7000]]
-        #masklist = [],
-
-        # Select our scans and IFs
-        # scanlist = [20, 21, 22, 23],
-        # iflist = [0],
-
-        # Now we give the name for the output file
         outfile = outfile,
     )
 
