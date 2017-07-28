@@ -49,7 +49,7 @@ def FASTcal(infile):
     sd.rcParams['scantable.storage'] = 'memory'
 
     #initialise
-    default('sdlistold')
+    #default('sdlistold')
     default('sdcal')
 
     infile = os.path.normpath(infile)
@@ -92,7 +92,19 @@ def FASTcal(infile):
         #scanaverage = config.getboolean('Calibration', 'scanaverage'),
 
         # Overwrite the output
-        overwrite = True,
+        overwrite = config.get('Calibration', 'overwrite'),
+        fraction = config.get('Calibration', 'fraction'),
+        noff = config.get('Calibration', 'noff'),
+        width = config.get('Calibration', 'width'),
+        elongated = config.get('Calibration', 'elongated'),
+        applytable = config.get('Calibration', 'applytable'),
+        interp = config.get('Calibration', 'interp'),
+        overwrite = config.get('Calibration', 'overwrite'),
+        field = config.get('Calibration', 'field'),
+        spw = config.get('Calibration', 'spw'),
+        scan = onfig.get('Calibration', 'scan'),
+        intent = config.get('Calibration', 'intent'),
+
         #plotlevel = 0,
 
         # We wish to fit out a baseline from the spectrum
@@ -113,28 +125,35 @@ def FASTcal(infile):
         # Select our scans and IFs
         # scanlist = [20, 21, 22, 23],
         # iflist = [0],
-        #scan = '0',
-        #spw = '0',
 
         # Now we give the name for the output file
         outfile = outfile,
-
-        # We will write it out in measurement set format
-        #outform = config.get('Calibration', 'out_format')
     )
 
 def write_default_config():
     config.add_section('Calibration')
-    config.set('Calibration', 'fluxunit', 'K')
-    config.set('Calibration', 'specunit', 'channel')
-    config.set('Calibration', 'timeaverage', 'False')
-    config.set('Calibration', 'polaverage', 'True')
-    config.set('Calibration', 'tau', '0.09')
+#    config.set('Calibration', 'fluxunit', 'K')
+#    config.set('Calibration', 'specunit', 'channel')
+#    config.set('Calibration', 'timeaverage', 'False')
+#    config.set('Calibration', 'polaverage', 'True')
+#    config.set('Calibration', 'tau', '0.09')
     config.set('Calibration', 'calmode', 'otfraster')
-    config.set('Calibration', 'average', 'True')
-    config.set('Calibration', 'scanaverage', 'True')
+  
+    config.set('Calibration', 'fraction', '10%')
+    config.set('Calibration', 'noff', '-1')
+    config.set('Calibration', 'width', '0.5')
+    config.set('Calibration', 'elongated', 'False')
+    config.set('Calibration', 'applytable', '')
+    config.set('Calibration', 'interp', '')
     config.set('Calibration', 'overwrite', 'True')
-    config.set('Calibration', 'plotlevel', '0')
+    config.set('Calibration', 'field', '')
+    config.set('Calibration', 'spw', '')
+    config.set('Calibration', 'scan', '')
+    config.set('Calibration', 'intent', 'OBSERVE_TARGET#ON_SOURCE')
+    
+#    config.set('Calibration', 'average', 'True')
+#    config.set('Calibration', 'scanaverage', 'True')
+#    config.set('Calibration', 'plotlevel', '0')
     config.set('Calibration', 'outfile_ext', '.calibrated.ms')
     config.set('Calibration', 'out_path', '')
     config.set('Calibration', 'out_format', 'MS2')
