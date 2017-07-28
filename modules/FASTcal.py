@@ -55,14 +55,18 @@ def FASTcal(infile):
     infile = os.path.normpath(infile)
     datapath = os.path.dirname(infile)
     head, tail = os.path.splitext(os.path.basename(infile))
-    outfile = head + config.get('Calibration', 'outfile_ext')
     
-    #remove if one already exists
+    outfile = head + config.get('Calibration', 'outfile_ext')
+        #remove if one already exists
     if os.path.isfile(outfile) == True:
         os.system('rm -rf ' + outfile)
 
+    listfile = head +'.listobs'
+        #remove if one already exists
+    if os.path.isfile(listfile) == True:
+        os.system('rm -rf ' + outfile)
     # List the contents of the dataset
-    listobs(vis=infile, listfile=head +'.listobs')
+    listobs(vis=infile, listfile)
 
     ##########################
     # Calibrate data
