@@ -101,7 +101,7 @@ def FASTcal(infile):
         interp = config.get('Calibration', 'interp'),
         field = config.get('Calibration', 'field'),
         spw = config.get('Calibration', 'spw'),
-        scan = onfig.get('Calibration', 'scan'),
+        scan = config.get('Calibration', 'scan'),
         intent = config.get('Calibration', 'intent'),
 
         #plotlevel = 0,
@@ -154,7 +154,7 @@ def write_default_config():
 #    config.set('Calibration', 'scanaverage', 'True')
 #    config.set('Calibration', 'plotlevel', '0')
     config.set('Calibration', 'outfile_ext', '.calibrated.ms')
-    config.set('Calibration', 'out_path', '')
+    config.set('Calibration', 'out_path', 'output')
     config.set('Calibration', 'out_format', 'MS2')
 
     # Writing our configuration file
