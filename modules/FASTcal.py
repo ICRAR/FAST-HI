@@ -58,7 +58,7 @@ def FASTcal(infile):
     
     outpath = config.get('Calibration', 'out_path')
     if os.path.isdir(outpath) == False:
-        os.system('md ' + outpath)
+        os.system('mkdir ' + outpath)
     
     outfile = os.path.join(outpath, head + config.get('Calibration', 'outfile_ext'))
         #remove if one already exists
