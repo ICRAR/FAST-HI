@@ -99,7 +99,6 @@ def FASTcal(infile):
         elongated = config.get('Calibration', 'elongated'),
         applytable = config.get('Calibration', 'applytable'),
         interp = config.get('Calibration', 'interp'),
-        overwrite = config.get('Calibration', 'overwrite'),
         field = config.get('Calibration', 'field'),
         spw = config.get('Calibration', 'spw'),
         scan = onfig.get('Calibration', 'scan'),
@@ -175,7 +174,7 @@ def main():
     args = parser.parse_args()
 
     if not args.infile:
-        parser.error('Infile must to be provided. Use -i or --infile.')
+        parser.error('Infile must to be provided. Use --infile.')
     elif not os.path.exists(args.infile):
         parser.error('%s does not exist' % args.infile)
 
