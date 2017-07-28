@@ -173,11 +173,6 @@ def main():
     parser.add_argument("--infile", help="Uncalibrated observation data")
     args = parser.parse_args()
 
-    if not args.infile:
-        parser.error('Infile must to be provided. Use --infile.')
-    elif not os.path.exists(args.infile):
-        parser.error('%s does not exist' % args.infile)
-
     logging.basicConfig(filename=log_name, level=logging.DEBUG)
     log.info('---Starting logger for ' + module_name)
     log.info(args)
@@ -199,6 +194,11 @@ def main():
     # read configuration file
     log.info('Using configuration from %s', config_file)
     config.read(config_file)
+
+    if not args.infile:
+        parser.error('Infile must to be provided. Use --infile.')
+    elif not os.path.exists(args.infile):
+        parser.error('%s does not exist' % args.infile)
 
     FASTcal(infile=args.infile)
 
