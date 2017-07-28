@@ -56,15 +56,16 @@ def FASTcal(infile):
     datapath = os.path.dirname(infile)
     head, tail = os.path.splitext(os.path.basename(infile))
     
-    outfile = head + config.get('Calibration', 'outfile_ext')
+    outpath = config.get('Calibration', 'out_path')
+    outfile = os.path.join(outpath, head + config.get('Calibration', 'outfile_ext'))
         #remove if one already exists
     if os.path.isfile(outfile) == True:
         os.system('rm -rf ' + outfile)
 
-    listfile = head +'.listobs'
+    listfile = os.path.join(outpath, head +'.listobs')
         #remove if one already exists
     if os.path.isfile(listfile) == True:
-        os.system('rm -rf ' + outfile)
+        os.system('rm -rf ' + listfile)
     # List the contents of the dataset
     listobs(vis=infile, listfile=listfile)
 
@@ -74,7 +75,7 @@ def FASTcal(infile):
 
     # These can be recovered by
     # execfile 'sdcal.infile.save'
-    saveinputs('sdcal', 'sdcal.' + head + '.save')
+    #saveinputs('sdcal', 'sdcal.' + head + '.save')
 
     # Finallly calibrate
     sdcal(infile=infile,
@@ -132,6 +133,7 @@ def write_default_config():
     config.set('Calibration', 'overwrite', 'True')
     config.set('Calibration', 'plotlevel', '0')
     config.set('Calibration', 'outfile_ext', '.calibrated.ms')
+    config.set('Calibration', 'out_path', '')
     config.set('Calibration', 'out_format', 'MS2')
 
     # Writing our configuration file
