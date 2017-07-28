@@ -150,7 +150,7 @@ def main():
 
     logging.basicConfig(filename=log_name, level=logging.DEBUG)
     log.info('---Starting logger for ' + module_name)
-    log.info('Commandline: ' + args)
+    log.info(args)
     log.info('CASA version: ' + casadef.casa_version)
 
     config_file = CONFIG_DEFAULT_FILE
