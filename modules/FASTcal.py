@@ -146,7 +146,7 @@ def main():
     if not args.infile:
         parser.error('Infile must to be provided. Use -i or --infile.')
     elif not os.path.exists(args.infile):
-        parser.error('%s does not exist' % filename)
+        parser.error('%s does not exist' % args.infile)
 
     logging.basicConfig(filename=log_name, level=logging.DEBUG)
     log.info('---Starting logger for ' + module_name)
