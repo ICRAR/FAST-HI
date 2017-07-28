@@ -66,7 +66,7 @@ def FASTcal(infile):
     if os.path.isfile(listfile) == True:
         os.system('rm -rf ' + outfile)
     # List the contents of the dataset
-    listobs(vis=infile, listfile)
+    listobs(vis=infile, listfile=listfile)
 
     ##########################
     # Calibrate data
