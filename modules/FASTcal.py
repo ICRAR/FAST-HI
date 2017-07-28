@@ -94,8 +94,8 @@ def FASTcal(infile):
         # Overwrite the output
         overwrite = config.getboolean('Calibration', 'overwrite'),
         fraction = config.get('Calibration', 'fraction'),
-        noff = config.get('Calibration', 'noff'),
-        width = config.get('Calibration', 'width'),
+        noff = config.getint('Calibration', 'noff'),
+        width = config.getfloat('Calibration', 'width'),
         elongated = config.getboolean('Calibration', 'elongated'),
         applytable = config.get('Calibration', 'applytable'),
         interp = config.get('Calibration', 'interp'),
