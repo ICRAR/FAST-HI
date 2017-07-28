@@ -55,18 +55,14 @@ def FASTcal(infile):
     infile = os.path.normpath(infile)
     datapath = os.path.dirname(infile)
     head, tail = os.path.splitext(os.path.basename(infile))
-
+    outfile = head + config.get('Calibration', 'outfile_ext')
+    
     #remove if one already exists
     if os.path.isfile(outfile) == True:
         os.system('rm -rf ' + outfile)
 
     # List the contents of the dataset
-    # Set an output file in case we want to refer back to it
-    #sdlist(infile=infile)
-
-    #maybe later
-    #listobs(vis='uid___A002_X85c183_X36f.ms',
-    #    listfile='uid___A002_X85c183_X36f.ms.listobs')
+    listobs(vis=infile, listfile=head +'.listobs')
 
     ##########################
     # Calibrate data
@@ -113,7 +109,7 @@ def FASTcal(infile):
         #spw = '0',
 
         # Now we give the name for the output file
-        outfile = head + config.get('Calibration', 'outfile_ext'),
+        outfile = outfile,
 
         # We will write it out in measurement set format
         #outform = config.get('Calibration', 'out_format')
@@ -154,7 +150,8 @@ def main():
 
     logging.basicConfig(filename=log_name, level=logging.DEBUG)
     log.info('---Starting logger for ' + module_name)
-    log.info(args)
+    log.info('Commandline: ' + args)
+    log.info('CASA version: ' + casadef.casa_version)
 
     config_file = CONFIG_DEFAULT_FILE
     if args.config:
