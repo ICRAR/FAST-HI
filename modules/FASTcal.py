@@ -145,8 +145,9 @@ def write_default_config():
 def main():
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--config", help="Configuration file for the spectral-line data reduction pipeline")
-    parser.add_argument("-i", "--infile", help="Uncalibrated observation data")
+    #do not add '-c' as CASA doesn't remove its own -c from the command line
+    parser.add_argument("--config", help="Configuration file for the spectral-line data reduction pipeline")
+    parser.add_argument("--infile", help="Uncalibrated observation data")
     args = parser.parse_args()
 
     if not args.infile:
