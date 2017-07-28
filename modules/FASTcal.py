@@ -92,11 +92,11 @@ def FASTcal(infile):
         #scanaverage = config.getboolean('Calibration', 'scanaverage'),
 
         # Overwrite the output
-        overwrite = config.get('Calibration', 'overwrite'),
+        overwrite = config.getboolean('Calibration', 'overwrite'),
         fraction = config.get('Calibration', 'fraction'),
         noff = config.get('Calibration', 'noff'),
         width = config.get('Calibration', 'width'),
-        elongated = config.get('Calibration', 'elongated'),
+        elongated = config.getboolean('Calibration', 'elongated'),
         applytable = config.get('Calibration', 'applytable'),
         interp = config.get('Calibration', 'interp'),
         field = config.get('Calibration', 'field'),
