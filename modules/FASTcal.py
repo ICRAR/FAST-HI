@@ -26,15 +26,12 @@ FAST-HI Calibration module
 
 import os
 import sys
-import logging
 import ConfigParser
 import argparse
 import casadef
 import time
 
 module_name = 'FASTcal'
-log_name = time.strftime("%Y%m%d-%H%M%S-") + module_name+'.log'
-log = logging.getLogger(log_name)
 
 #config file
 CONFIG_DEFAULT_FILE="calibr.cfg"
@@ -42,7 +39,7 @@ config = ConfigParser.RawConfigParser()
 
 def FASTcal(infile):
 
-    log.info('FASTcal(Calibrating observations file: %s)', infile)
+    casalog.post('FASTcal(Calibrating observations file: %s)' % infile)
 
     sd.rcParams['verbose'] = True
     sd.rcParams['scantable.storage'] = 'memory'
@@ -66,7 +63,7 @@ def FASTcal(infile):
     if os.path.isfile(listfile) == True:
         os.system('rm -rf ' + listfile)
     # List the contents of the dataset
-    listobs(vis=infile, listfile=listfile)
+    listobs(vis=infile)
 
     ##########################
     # Calibrate data
@@ -108,7 +105,7 @@ def write_default_config():
     # Writing our configuration file
     with open(CONFIG_DEFAULT_FILE, 'wb') as configfile:
         config.write(configfile)
-    log.info('No configuration file found. Default configuration file has been created: ' + CONFIG_DEFAULT_FILE)
+    casalog.post('No configuration file found. Default configuration file has been created: ' + CONFIG_DEFAULT_FILE)
 
 
 def main():
@@ -119,28 +116,28 @@ def main():
     
     parser.add_argument("--config", help="Configuration file for the spectral-line data reduction pipeline")
     parser.add_argument("--infile", help="Uncalibrated observation data")
+    parser.add_argument("--logfile")
     args = parser.parse_args()
 
-    logging.basicConfig(filename=log_name, level=logging.DEBUG)
-    log.info('\n---Starting logger for ' + module_name)
-    log.info(args)
-    log.info('CASA version: ' + casadef.casa_version)
+    casalog.post('\n---Starting logger for ' + module_name)
+    casalog.post(str(args))
+    casalog.post('CASA version: ' + casadef.casa_version)
 
     config_file = CONFIG_DEFAULT_FILE
     if args.config:
         if os.path.isfile(args.config):
             config_file=args.config
         else:
-            log.exception('Configuration ' + args.config + ' does not exist.') 
+            casalog.post('Configuration ' + args.config + ' does not exist.', priority="SEVERE")
             sys.exit()
     else:
         if not os.path.isfile(config_file):
             write_default_config()
-            log.info('Check configuration and re-run the module.')
+            casalog.post('Check configuration and re-run the module.')
             sys.exit()
 
     # read configuration file
-    log.info('Using configuration from %s', config_file)
+    casalog.post('Using configuration from %s' % config_file)
     config.read(config_file)
 
     if not args.infile:
