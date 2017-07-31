@@ -30,13 +30,11 @@ import logging
 import ConfigParser
 import argparse
 import casadef
+import time
 
 module_name = 'FASTcal'
-log_name = module_name+'.log'
-
-
+log_name = time.strftime("%Y%m%d-%H%M%S-") + module_name+'.log'
 log = logging.getLogger(log_name)
-
 
 #config file
 CONFIG_DEFAULT_FILE="calibr.cfg"
@@ -62,9 +60,6 @@ def FASTcal(infile):
         os.system('mkdir ' + outpath)
     
     outfile = os.path.join(outpath, head + config.get('Calibration', 'outfile_ext'))
-        #remove if one already exists
-    if os.path.isfile(outfile) == True:
-        os.system('rm -rf ' + outfile)
 
     listfile = os.path.join(outpath, head +'.listobs')
         #remove if one already exists
@@ -76,22 +71,8 @@ def FASTcal(infile):
     ##########################
     # Calibrate data
     ##########################
-
-    # These can be recovered by
-    # execfile 'sdcal.infile.save'
-    #saveinputs('sdcal', 'sdcal.' + head + '.save')
-
-    # Finallly calibrate
     sdcal(infile=infile,
-        #fluxunit = config.get('Calibration', 'fluxunit'),
-        #specunit = config.get('Calibration', 'specunit'),
-        #timeaverage = config.getboolean('Calibration', 'timeaverage'),
-        #polaverage = config.getboolean('Calibration', 'polaverage'),
-        #tau = config.getfloat('Calibration', 'tau'),
         calmode = config.get('Calibration', 'calmode'),
-        #average = config.getboolean('Calibration', 'average'),
-        #scanaverage = config.getboolean('Calibration', 'scanaverage'),
-
         overwrite = config.getboolean('Calibration', 'overwrite'),
         fraction = config.get('Calibration', 'fraction'),
         noff = config.getint('Calibration', 'noff'),
@@ -104,17 +85,11 @@ def FASTcal(infile):
         scan = config.get('Calibration', 'scan'),
         intent = config.get('Calibration', 'intent'),
         outfile = outfile,
-    )
+        )
 
 def write_default_config():
     config.add_section('Calibration')
-#    config.set('Calibration', 'fluxunit', 'K')
-#    config.set('Calibration', 'specunit', 'channel')
-#    config.set('Calibration', 'timeaverage', 'False')
-#    config.set('Calibration', 'polaverage', 'True')
-#    config.set('Calibration', 'tau', '0.09')
-    config.set('Calibration', 'calmode', 'otfraster')
-  
+    config.set('Calibration', 'calmode', 'otfraster') 
     config.set('Calibration', 'fraction', '10%')
     config.set('Calibration', 'noff', '-1')
     config.set('Calibration', 'width', '0.5')
@@ -126,10 +101,6 @@ def write_default_config():
     config.set('Calibration', 'spw', '')
     config.set('Calibration', 'scan', '')
     config.set('Calibration', 'intent', 'OBSERVE_TARGET#ON_SOURCE')
-    
-#    config.set('Calibration', 'average', 'True')
-#    config.set('Calibration', 'scanaverage', 'True')
-#    config.set('Calibration', 'plotlevel', '0')
     config.set('Calibration', 'outfile_ext', '.calibrated.ms')
     config.set('Calibration', 'out_path', 'output')
     config.set('Calibration', 'out_format', 'MS2')
@@ -151,7 +122,7 @@ def main():
     args = parser.parse_args()
 
     logging.basicConfig(filename=log_name, level=logging.DEBUG)
-    log.info('---Starting logger for ' + module_name)
+    log.info('\n---Starting logger for ' + module_name)
     log.info(args)
     log.info('CASA version: ' + casadef.casa_version)
 
