@@ -97,7 +97,7 @@ def write_default_config():
     config.set('Calibration', 'spw', '')
     config.set('Calibration', 'scan', '')
     config.set('Calibration', 'intent', 'OBSERVE_TARGET#ON_SOURCE')
-    config.set('Calibration', 'outfile_ext', '.calibrated.ms')
+    config.set('Calibration', 'outfile_ext', '.ms.calibrated')
     
     # Writing our configuration file
     with open(CONFIG_DEFAULT_FILE, 'wb') as configfile:
