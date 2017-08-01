@@ -65,18 +65,19 @@ def FASTcal(infile):
     ##########################
     sdcal(infile=infile,
         calmode = config.get('Calibration', 'calmode'),
-        overwrite = config.getboolean('Calibration', 'overwrite'),
         fraction = config.get('Calibration', 'fraction'),
         noff = config.getint('Calibration', 'noff'),
         width = config.getfloat('Calibration', 'width'),
         elongated = config.getboolean('Calibration', 'elongated'),
         applytable = config.get('Calibration', 'applytable'),
         interp = config.get('Calibration', 'interp'),
+#        spwmap = config.get('Calibration', 'spwmap'),
         field = config.get('Calibration', 'field'),
         spw = config.get('Calibration', 'spw'),
         scan = config.get('Calibration', 'scan'),
         intent = config.get('Calibration', 'intent'),
         outfile = os.path.join(outpath, head + config.get('Calibration', 'outfile_ext')),
+        overwrite = config.getboolean('Calibration', 'overwrite')
         )
 
 def write_default_config():
@@ -93,6 +94,7 @@ def write_default_config():
     config.set('Calibration', 'applytable', '')
     config.set('Calibration', 'interp', '')
     config.set('Calibration', 'overwrite', 'True')
+    config.set('Calibration', 'spwmap', '')
     config.set('Calibration', 'field', '')
     config.set('Calibration', 'spw', '')
     config.set('Calibration', 'scan', '')
