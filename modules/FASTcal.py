@@ -34,36 +34,31 @@ import time
 module_name = 'FASTcal'
 
 #config file
-CONFIG_DEFAULT_FILE="calibr.cfg"
+CONFIG_DEFAULT_FILE="../conf/calibr.conf"
 config = ConfigParser.RawConfigParser()
+
+sd.rcParams['verbose'] = True
+sd.rcParams['scantable.storage'] = 'memory'
 
 def FASTcal(infile):
 
-    casalog.post('FASTcal(Calibrating observations file: %s)' % infile)
+    infile = os.path.normpath(os.path.join(config.get('Common', 'in_path'), infile))
+    if not os.path.exists(infile):
+        casalog.post('%s does not exist' % infile, priority="SEVERE")
+        sys.exit()
 
-    sd.rcParams['verbose'] = True
-    sd.rcParams['scantable.storage'] = 'memory'
-
-    #initialise
-    #default('sdlistold')
-    default('sdcal')
-
-    infile = os.path.normpath(infile)
-    datapath = os.path.dirname(infile)
-    head, tail = os.path.splitext(os.path.basename(infile))
-    
-    outpath = config.get('Calibration', 'out_path')
-    if os.path.isdir(outpath) == False:
-        os.system('mkdir ' + outpath)
-    
-    outfile = os.path.join(outpath, head + config.get('Calibration', 'outfile_ext'))
-
-    listfile = os.path.join(outpath, head +'.listobs')
-        #remove if one already exists
-    if os.path.isfile(listfile) == True:
-        os.system('rm -rf ' + listfile)
+    casalog.post('Calibration for %s' % infile)
     # List the contents of the dataset
     listobs(vis=infile)
+    
+    #initialise
+    default('sdcal')
+
+    head, tail = os.path.splitext(os.path.basename(infile))
+    
+    outpath = config.get('Common', 'out_path')
+    if os.path.isdir(outpath) == False:
+        os.system('mkdir ' + outpath)
 
     ##########################
     # Calibrate data
@@ -81,10 +76,14 @@ def FASTcal(infile):
         spw = config.get('Calibration', 'spw'),
         scan = config.get('Calibration', 'scan'),
         intent = config.get('Calibration', 'intent'),
-        outfile = outfile,
+        outfile = os.path.join(outpath, head + config.get('Calibration', 'outfile_ext')),
         )
 
 def write_default_config():
+    config.add_section('Common')
+    config.set('Common', 'in_path', '')
+    config.set('Common', 'out_path', '')
+
     config.add_section('Calibration')
     config.set('Calibration', 'calmode', 'otfraster') 
     config.set('Calibration', 'fraction', '10%')
@@ -99,9 +98,7 @@ def write_default_config():
     config.set('Calibration', 'scan', '')
     config.set('Calibration', 'intent', 'OBSERVE_TARGET#ON_SOURCE')
     config.set('Calibration', 'outfile_ext', '.calibrated.ms')
-    config.set('Calibration', 'out_path', 'output')
-    config.set('Calibration', 'out_format', 'MS2')
-
+    
     # Writing our configuration file
     with open(CONFIG_DEFAULT_FILE, 'wb') as configfile:
         config.write(configfile)
@@ -111,16 +108,17 @@ def write_default_config():
 def main():
 
     parser = argparse.ArgumentParser()
-    #removes '-c' leftover CASA argument
+    #cleans CASA arguments
     parser.add_argument("-c")
-    
+    parser.add_argument("--logfile")
+        
     parser.add_argument("--config", help="Configuration file for the spectral-line data reduction pipeline")
     parser.add_argument("--infile", help="Uncalibrated observation data")
-    parser.add_argument("--logfile")
+
     args = parser.parse_args()
 
-    casalog.post('\n---Starting logger for ' + module_name)
-    casalog.post(str(args))
+    casalog.post('---Logging for ' + module_name)
+    casalog.post('Command line:'+str(args))
     casalog.post('CASA version: ' + casadef.casa_version)
 
     config_file = CONFIG_DEFAULT_FILE
@@ -141,9 +139,7 @@ def main():
     config.read(config_file)
 
     if not args.infile:
-        parser.error('Infile must to be provided. Use --infile.')
-    elif not os.path.exists(args.infile):
-        parser.error('%s does not exist' % args.infile)
+        casalog.post('Infile must to be provided. Use --infile.', priority="SEVERE")
 
     FASTcal(infile=args.infile)
 
