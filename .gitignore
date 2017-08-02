@@ -1,0 +1,10 @@
+# Eclipse files
+.pydevproject
+.project
+
+# CASA-produced files
+*.log
+*.last
+
+# Python-related
+*.pyc
