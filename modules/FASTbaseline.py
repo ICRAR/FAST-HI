@@ -49,7 +49,7 @@ def FASTbaseline(infile):
 
     casalog.post('Baseline subtraction for %s' % infile)
     # List the contents of the dataset
-    listobs(vis=infile)
+    #listobs(vis=infile)
     
     head, tail = os.path.splitext(os.path.basename(infile))
     
