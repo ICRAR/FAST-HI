@@ -47,7 +47,7 @@ def FASTimage(infile):
         casalog.post('%s does not exist' % infile, priority="SEVERE")
         sys.exit()
 
-    casalog.post('Baseline subtraction for %s' % infile)
+    casalog.post('Imaging for %s' % infile)
     # List the contents of the dataset
     listobs(vis=infile)
     
@@ -58,85 +58,73 @@ def FASTimage(infile):
         os.system('mkdir ' + outpath)
 
     ##########################
-    # Fit and remove the baseline
+    # Perform imaging
     ##########################
-    sdbaseline(infile  = infile,
-    datacolumn         = config.get('Baseline', 'datacolumn'), 
-    antenna            = config.get('Baseline', 'antenna'),
-    field              = config.get('Baseline', 'field'),
-    spw                = config.get('Baseline', 'spw'),
-    timerange          = config.get('Baseline', 'timerange'),
-    scan               = config.get('Baseline', 'scan'),
-    pol                = config.get('Baseline', 'pol'),
-    intent             = config.get('Baseline', 'intent'),
-    maskmode           = config.get('Baseline', 'maskmode'),
-    thresh             = config.getfloat('Baseline', 'thresh'),
-    avg_limit          = config.getint('Baseline', 'avg_limit'),
-    minwidth           = config.getint('Baseline', 'minwidth'),
-#    edge               = config.set('Baseline', 'edge', '[0, 0]'),
-    blmode             = config.get('Baseline', 'blmode'),
-    dosubtract         = config.getboolean('Baseline', 'dosubtract'),
-    blformat           = config.get('Baseline', 'blformat'),
-    bloutput           = config.get('Baseline', 'bloutput'),
-    bltable            = config.get('Baseline', 'bltable'),
-    blfunc             = config.get('Baseline', 'blfunc'),
-    order              = config.getint('Baseline', 'order'),
-    npiece             = config.getint('Baseline', 'npiece'),
-    applyfft           = config.getboolean('Baseline', 'applyfft'),
-    fftmethod          = config.get('Baseline', 'fftmethod'),
-    fftthresh          = config.getfloat('Baseline', 'fftthresh'),
- #   addwn              = config.get('Baseline', 'addwn', '[0]'),
- #   rejwn              = config.get('Baseline', 'rejwn', '[]'),
-    clipthresh         = config.getfloat('Baseline', 'clipthresh'),
-    clipniter          = config.getint('Baseline', 'clipniter'),
-    blparam            = config.get('Baseline', 'blparam'),
-    verbose            = config.getboolean('Baseline', 'verbose'),
-    showprogress       = config.getboolean('Baseline', 'showprogress'),
-    minnrow            = config.getint('Baseline', 'minnrow'),
-    overwrite          = config.getboolean('Baseline', 'overwrite'), 
-    outfile            = os.path.join(outpath, head + config.get('Baseline', 'outfile_ext')))
+    sdimaging(
+        infiles  = [infile],
+        outfile            = os.path.join(outpath, head + config.get('Imaging', 'outfile_ext')),
+        overwrite          = config.getboolean('Imaging', 'overwrite'),
+        field              = config.get('Imaging', 'field'),
+        spw                = config.get('Imaging', 'spw'),
+        antenna            = config.get('Imaging', 'antenna'),
+        scan               = config.get('Imaging', 'scan'),
+        intent             = config.get('Imaging', 'intent'),
+        mode               = config.get('Imaging', 'mode'),
+        nchan              = config.getint('Imaging', 'nchan'),
+        start              = config.get('Imaging', 'start'),
+        width              = config.get('Imaging', 'width'),
+        veltype            = config.get('Imaging', 'veltype'),
+        outframe           = config.get('Imaging', 'outframe'),
+        gridfunction       = config.get('Imaging', 'gridfunction'),
+        convsupport        = config.getint('Imaging', 'convsupport'),
+        truncate           = config.getfloat('Imaging', 'truncate'),
+        gwidth             = config.getfloat('Imaging', 'gwidth'),
+        jwidth             = config.getfloat('Imaging', 'jwidth'),
+        imsize             = config.get('Imaging', 'imsize'),
+        cell               = config.get('Imaging', 'cell'),
+        phasecenter        = config.get('Imaging', 'phasecenter'),
+        ephemsrcname       = config.get('Imaging', 'ephemsrcname'),
+        pointingcolumn     = config.get('Imaging', 'pointingcolumn'),
+        restfreq           = config.get('Imaging', 'restfreq'),
+        stokes             = config.get('Imaging', 'stokes'),
+        minweight          = config.getfloat('Imaging', 'minweight'),
+        clipminmax         = config.getboolean('Imaging', 'clipminmax'),
+    )
 
 def write_default_config():
     config.add_section('Common')
     config.set('Common', 'in_path', '')
     config.set('Common', 'out_path', '')
 
-    config.add_section('Baseline')
-    config.set('Baseline', 'datacolumn', 'corrected') 
-    config.set('Baseline', 'antenna', '')
-    config.set('Baseline', 'field', '')
-    config.set('Baseline', 'spw', '')
-    config.set('Baseline', 'timerange', '')
-    config.set('Baseline', 'scan', '')
-    config.set('Baseline', 'pol', '')
-    config.set('Baseline', 'intent', '')
-    config.set('Baseline', 'maskmode', 'auto')
-    config.set('Baseline', 'thresh', '5.0')
-    config.set('Baseline', 'avg_limit', '4')
-    config.set('Baseline', 'minwidth', '4')
-    config.set('Baseline', 'edge', '[0, 0]')
-    config.set('Baseline', 'blmode', 'fit')
-    config.set('Baseline', 'dosubtract', 'True')
-    config.set('Baseline', 'blformat', 'text')
-    config.set('Baseline', 'bloutput',  "")
-    config.set('Baseline', 'bltable', "")
-    config.set('Baseline', 'blfunc', "poly")
-    config.set('Baseline', 'order', '1')
-    config.set('Baseline', 'npiece', '2')
-    config.set('Baseline', 'applyfft', 'True')
-    config.set('Baseline', 'fftmethod', "fft")
-    config.set('Baseline', 'fftthresh', '3.0')
-    config.set('Baseline', 'addwn', '[0]')
-    config.set('Baseline', 'rejwn', '[]')
-    config.set('Baseline', 'clipthresh', '3.0')
-    config.set('Baseline', 'clipniter', '0')
-    config.set('Baseline', 'blparam', "")
-    config.set('Baseline', 'verbose', 'False')
-    config.set('Baseline', 'showprogress', 'False')
-    config.set('Baseline', 'minnrow', '1000')
-    config.set('Baseline', 'overwrite', 'False')         
-    config.set('Baseline', 'outfile_ext', '.ms.baselined') 
-    
+    config.add_section('Imaging')
+    config.set('Imaging', 'outfile_ext', 'ms.imaging')
+    config.set('Imaging', 'overwrite', 'False')
+    config.set('Imaging', 'field', '')
+    config.set('Imaging', 'spw', '')
+    config.set('Imaging', 'antenna', '')
+    config.set('Imaging', 'scan', '')
+    config.set('Imaging', 'intent', 'OBSERVE_TARGET#ON_SOURCE')
+    config.set('Imaging', 'mode', 'channel')
+    config.set('Imaging', 'nchan', '-1')
+    config.set('Imaging', 'start', '0')
+    config.set('Imaging', 'width', '1')
+    config.set('Imaging', 'veltype', 'radio')
+    config.set('Imaging', 'outframe', '')
+    config.set('Imaging', 'gridfunction', 'BOX')
+    config.set('Imaging', 'convsupport', '-1')
+    config.set('Imaging', 'truncate', '-1')
+    config.set('Imaging', 'gwidth', '-1')
+    config.set('Imaging', 'jwidth', '-1')
+    config.set('Imaging', 'imsize', '[]')
+    config.set('Imaging', 'cell', '')
+    config.set('Imaging', 'phasecenter', '')
+    config.set('Imaging', 'ephemsrcname', '')
+    config.set('Imaging', 'pointingcolumn', 'direction')
+    config.set('Imaging', 'restfreq', '')
+    config.set('Imaging', 'stokes', '')
+    config.set('Imaging', 'minweight', '0.1')
+    config.set('Imaging', 'clipminmax', 'False')
+
     # Writing our configuration file
     with open(CONFIG_DEFAULT_FILE, 'wb') as configfile:
         config.write(configfile)
