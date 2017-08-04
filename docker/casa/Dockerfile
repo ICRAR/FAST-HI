@@ -54,9 +54,9 @@ RUN yum install -y \
     yum clean all
 
 RUN mkdir -p /opt/casa
-RUN curl -SL https://svn.cv.nrao.edu/casa/linux_distro/release/el6/casa-release-4.7.2-el6.tar.gz \
+RUN curl -SL https://svn.cv.nrao.edu/casa/linux_distro/release/el6/casa-release-5.0.0-218.el6.tar.gz \
     | tar -xzC /opt/casa
 RUN curl --silent --show-error --retry 5 https://bootstrap.pypa.io/get-pip.py | python
-ENV PATH $PATH:/opt/casa/casa-release-4.7.2-el6/bin
+ENV PATH $PATH:/opt/casa/casa-release-5.0.0-218.el6/bin
 # Make sure Casa is initialised
 RUN echo exit | casa --nologger --log2term
