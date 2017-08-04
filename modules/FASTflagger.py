@@ -31,23 +31,23 @@ import argparse
 import casadef
 import time
 
-module_name = 'FASTimage'
+module_name = 'FASTflagger'
 
 #config file
-CONFIG_DEFAULT_FILE="../conf/image.conf"
+CONFIG_DEFAULT_FILE="../conf/flagger.conf"
 config = ConfigParser.RawConfigParser()
 
 sd.rcParams['verbose'] = True
 sd.rcParams['scantable.storage'] = 'memory'
 
-def FASTimage(infile):
+def FASTflagger(infile):
 
     infile = os.path.normpath(os.path.join(config.get('Common', 'in_path'), infile))
     if not os.path.exists(infile):
         casalog.post('%s does not exist' % infile, priority="SEVERE")
         sys.exit()
 
-    casalog.post('Baseline subtraction for %s' % infile)
+    casalog.post('Flagging for %s' % infile)
     # List the contents of the dataset
     listobs(vis=infile)
 
@@ -58,7 +58,7 @@ def FASTimage(infile):
         os.system('mkdir ' + outpath)
 
     ##########################
-    # Fit and remove the baseline
+    # Flag data
     ##########################
     flagdata(
         vis  = infile,
@@ -261,7 +261,7 @@ def main():
     if not args.infile:
         casalog.post('File with a list of measurementsets must to be provided. Use --infile.', priority="SEVERE")
 
-    FASTimage(infile=args.infile)
+    FASTflagger(infile=args.infile)
 
 if __name__ == "__main__":
     main()
