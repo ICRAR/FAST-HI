@@ -26,16 +26,17 @@ FAST-HI Imaging module
 
 import os
 import sys
-import ConfigParser
 import argparse
 import casadef
 import time
+
+import utils
 
 module_name = 'FASTimage'
 
 #config file
 CONFIG_DEFAULT_FILE="../conf/image.conf"
-config = ConfigParser.RawConfigParser()
+config = utils.RawConfigParser()
 
 sd.rcParams['verbose'] = True
 sd.rcParams['scantable.storage'] = 'memory'
@@ -80,7 +81,7 @@ def FASTimage(infile):
         truncate           = config.getfloat('Imaging', 'truncate'),
         gwidth             = config.getfloat('Imaging', 'gwidth'),
         jwidth             = config.getfloat('Imaging', 'jwidth'),
-        imsize             = config.get('Imaging', 'imsize'),
+        imsize             = config.getintlist('Imaging', 'imsize'),
         cell               = config.get('Imaging', 'cell'),
         phasecenter        = config.get('Imaging', 'phasecenter'),
         ephemsrcname       = config.get('Imaging', 'ephemsrcname'),
