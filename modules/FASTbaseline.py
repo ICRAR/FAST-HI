@@ -26,16 +26,17 @@ FAST-HI Baseline subtraction module
 
 import os
 import sys
-import ConfigParser
 import argparse
 import casadef
 import time
+
+import utils
 
 module_name = 'FASTbaseline'
 
 #config file
 CONFIG_DEFAULT_FILE="../conf/baseline.conf"
-config = ConfigParser.RawConfigParser()
+config = utils.RawConfigParser()
 
 sd.rcParams['verbose'] = True
 sd.rcParams['scantable.storage'] = 'memory'
@@ -71,7 +72,7 @@ def FASTbaseline(infile):
     thresh             = config.getfloat('Baseline', 'thresh'),
     avg_limit          = config.getint('Baseline', 'avg_limit'),
     minwidth           = config.getint('Baseline', 'minwidth'),
-#    edge               = config.set('Baseline', 'edge', '[0, 0]'),
+    edge               = config.getintlist('Baseline', 'edge'),
     blmode             = config.get('Baseline', 'blmode'),
     dosubtract         = config.getboolean('Baseline', 'dosubtract'),
     blformat           = config.get('Baseline', 'blformat'),
@@ -83,8 +84,8 @@ def FASTbaseline(infile):
     applyfft           = config.getboolean('Baseline', 'applyfft'),
     fftmethod          = config.get('Baseline', 'fftmethod'),
     fftthresh          = config.getfloat('Baseline', 'fftthresh'),
- #   addwn              = config.get('Baseline', 'addwn', '[0]'),
- #   rejwn              = config.get('Baseline', 'rejwn', '[]'),
+    addwn              = config.getfloatlist('Baseline', 'addwn'),
+    rejwn              = config.getfloatlist('Baseline', 'rejwn'),
     clipthresh         = config.getfloat('Baseline', 'clipthresh'),
     clipniter          = config.getint('Baseline', 'clipniter'),
     blparam            = config.get('Baseline', 'blparam'),
