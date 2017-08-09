@@ -37,6 +37,26 @@ module_name = 'FASTcal'
 CONFIG_DEFAULT_FILE="../conf/calibr.conf"
 config = ConfigParser.RawConfigParser()
 
+config.add_section('Common')
+config.set('Common', 'in_path', '')
+config.set('Common', 'out_path', '')
+
+config.add_section('Calibration')
+config.set('Calibration', 'calmode', 'otfraster') 
+config.set('Calibration', 'fraction', '10%')
+config.set('Calibration', 'noff', '-1')
+config.set('Calibration', 'width', '0.5')
+config.set('Calibration', 'elongated', 'False')
+config.set('Calibration', 'applytable', '')
+config.set('Calibration', 'interp', '')
+config.set('Calibration', 'overwrite', 'True')
+config.set('Calibration', 'spwmap', '')
+config.set('Calibration', 'field', '')
+config.set('Calibration', 'spw', '')
+config.set('Calibration', 'scan', '')
+config.set('Calibration', 'intent', 'OBSERVE_TARGET#ON_SOURCE')
+config.set('Calibration', 'outfile_ext', '.ms.calibrated')
+    
 sd.rcParams['verbose'] = True
 sd.rcParams['scantable.storage'] = 'memory'
 
@@ -80,27 +100,7 @@ def FASTcal(infile):
         overwrite = config.getboolean('Calibration', 'overwrite')
         )
 
-def write_default_config():
-    config.add_section('Common')
-    config.set('Common', 'in_path', '')
-    config.set('Common', 'out_path', '')
-
-    config.add_section('Calibration')
-    config.set('Calibration', 'calmode', 'otfraster') 
-    config.set('Calibration', 'fraction', '10%')
-    config.set('Calibration', 'noff', '-1')
-    config.set('Calibration', 'width', '0.5')
-    config.set('Calibration', 'elongated', 'False')
-    config.set('Calibration', 'applytable', '')
-    config.set('Calibration', 'interp', '')
-    config.set('Calibration', 'overwrite', 'True')
-    config.set('Calibration', 'spwmap', '')
-    config.set('Calibration', 'field', '')
-    config.set('Calibration', 'spw', '')
-    config.set('Calibration', 'scan', '')
-    config.set('Calibration', 'intent', 'OBSERVE_TARGET#ON_SOURCE')
-    config.set('Calibration', 'outfile_ext', '.ms.calibrated')
-    
+def write_default_config():   
     # Writing our configuration file
     with open(CONFIG_DEFAULT_FILE, 'wb') as configfile:
         config.write(configfile)
