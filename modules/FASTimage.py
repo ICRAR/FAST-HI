@@ -37,6 +37,7 @@ module_name = 'FASTimage'
 #config file
 CONFIG_DEFAULT_FILE="../conf/image.conf"
 config = utils.RawConfigParser()
+
 config.add_section('Common')
 config.set('Common', 'in_path', '')
 config.set('Common', 'out_path', '')
