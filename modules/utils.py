@@ -26,5 +26,4 @@ class ListAwareMixIn(object):
 
 class RawConfigParser(ConfigParser.RawConfigParser, ListAwareMixIn): pass
 class ConfigParser(ConfigParser.ConfigParser, ListAwareMixIn): pass
-class SafeConfigParser(ConfigParser.SafeConfigParser, ListAwareMixIn): pass
-
+#class SafeConfigParser(ConfigParser.SafeConfigParser, ListAwareMixIn): pass
