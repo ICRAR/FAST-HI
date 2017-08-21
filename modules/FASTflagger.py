@@ -30,12 +30,13 @@ import ConfigParser
 import argparse
 import casadef
 import time
+import utils
 
 module_name = 'FASTflagger'
 
 # config file
 CONFIG_DEFAULT_FILE = "../conf/flagger.conf"
-config = ConfigParser.RawConfigParser()
+config = utils.RawConfigParser()
 
 config.add_section('Common')
 config.set('Common', 'in_path', '')
