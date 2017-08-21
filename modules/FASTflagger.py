@@ -164,7 +164,7 @@ def FASTflagger(infile):
         datacolumn=config.get('Flagging', 'datacolumn'),
         clipoutside=config.getboolean('Flagging', 'clipoutside'),
         channelavg=config.getboolean('Flagging', 'channelavg'),
-        chanbin=config.getfloat('Flagging', 'chanbin'),
+        chanbin=config.getint('Flagging', 'chanbin'),
         timeavg=config.getboolean('Flagging', 'timeavg'),
         timebin=config.getfloat('Flagging', 'timebin'),
         clipzeros=config.getboolean('Flagging', 'clipzeros'),
