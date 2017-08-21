@@ -160,7 +160,7 @@ def FASTflagger(infile):
         array=config.get('Flagging', 'array'),
         observation=config.get('Flagging', 'observation'),
         feed=config.get('Flagging', 'feed'),
-        clipminmax=config.get('Flagging', 'clipminmax'),
+        clipminmax=config.getfloatlist('Flagging', 'clipminmax'),
         datacolumn=config.get('Flagging', 'datacolumn'),
         clipoutside=config.getboolean('Flagging', 'clipoutside'),
         channelavg=config.getboolean('Flagging', 'channelavg'),
