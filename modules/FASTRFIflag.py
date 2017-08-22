@@ -30,13 +30,12 @@ import ConfigParser
 import argparse
 import casadef
 import time
-import utils
 
-module_name = 'FASTflagger'
+module_name = 'FASTRFIflag'
 
 # config file
-CONFIG_DEFAULT_FILE = "../conf/flagger.conf"
-config = utils.RawConfigParser()
+CONFIG_DEFAULT_FILE = "../conf/RFIflag.conf"
+config = ConfigParser.RawConfigParser()
 
 config.add_section('Common')
 config.set('Common', 'in_path', '')
@@ -45,7 +44,6 @@ config.set('Common', 'out_path', '')
 config.add_section('Flagging')
 config.set('Flagging', 'outfile_ext', 'ms.flagging')
 config.set('Flagging', 'overwrite', 'False')
-config.set('Flagging', 'mode', 'manual')
 config.set('Flagging', 'autocorr', 'False')
 config.set('Flagging', 'inpfile', '')
 config.set('Flagging', 'reason', 'any')
@@ -121,7 +119,7 @@ config.set('Flagging', 'cmdreason', '')
 sd.rcParams['verbose'] = True
 sd.rcParams['scantable.storage'] = 'memory'
 
-def FASTflagger(infile):
+def FASTRFIflag(infile):
 
     infile = os.path.normpath(os.path.join(config.get('Common', 'in_path'), infile))
     if not os.path.exists(infile):
@@ -145,7 +143,8 @@ def FASTflagger(infile):
         vis=infile,
         outfile=os.path.join(outpath, head + config.get('Flagging', 'outfile_ext')),
         overwrite=config.getboolean('Flagging', 'overwrite'),
-        mode=config.get('Flagging', 'mode'),
+        # mode is fixed to 'rflag'
+        mode='rflag',
         autocorr=config.getboolean('Flagging', 'autocorr'),
         inpfile=config.get('Flagging', 'inpfile'),
         reason=config.get('Flagging', 'reason'),
@@ -161,13 +160,13 @@ def FASTflagger(infile):
         array=config.get('Flagging', 'array'),
         observation=config.get('Flagging', 'observation'),
         feed=config.get('Flagging', 'feed'),
-#        clipminmax=config.getfloatlist('Flagging', 'clipminmax'),
+        clipminmax=config.get('Flagging', 'clipminmax'),
         datacolumn=config.get('Flagging', 'datacolumn'),
         clipoutside=config.getboolean('Flagging', 'clipoutside'),
         channelavg=config.getboolean('Flagging', 'channelavg'),
-        chanbin=config.getint('Flagging', 'chanbin'),
+        chanbin=config.getfloat('Flagging', 'chanbin'),
         timeavg=config.getboolean('Flagging', 'timeavg'),
-        timebin=config.get('Flagging', 'timebin'),
+        timebin=config.getfloat('Flagging', 'timebin'),
         clipzeros=config.getboolean('Flagging', 'clipzeros'),
         quackinterval=config.getfloat('Flagging', 'quackinterval'),
         quackmode=config.get('Flagging', 'quackmode'),
@@ -185,7 +184,7 @@ def FASTflagger(infile):
         maxnpieces=config.getint('Flagging', 'maxnpieces'),
         flagdimension=config.get('Flagging', 'flagdimension'),
         usewindowstats=config.get('Flagging', 'usewindowstats'),
-        halfwin=config.getint('Flagging', 'halfwin'),
+        halfwin=config.getfloat('Flagging', 'halfwin'),
         extendflags=config.getboolean('Flagging', 'extendflags'),
         winsize=config.getint('Flagging', 'winsize'),
         timedev=config.get('Flagging', 'timedev'),
@@ -205,8 +204,8 @@ def FASTflagger(infile):
         flagnearfreq=config.getboolean('Flagging', 'flagnearfreq'),
         minrel=config.getfloat('Flagging', 'minrel'),
         maxrel=config.getfloat('Flagging', 'maxrel'),
-        minabs=config.getint('Flagging', 'minabs'),
-        maxabs=config.getint('Flagging', 'maxabs'),
+        minabs=config.getfloat('Flagging', 'minabs'),
+        maxabs=config.getfloat('Flagging', 'maxabs'),
         spwchan=config.getboolean('Flagging', 'spwchan'),
         spwcorr=config.getboolean('Flagging', 'spwcorr'),
         basecnt=config.getboolean('Flagging', 'basecnt'),
@@ -262,7 +261,7 @@ def main():
     if not args.infile:
         casalog.post('File with a list of measurementsets must to be provided. Use --infile.', priority="SEVERE")
 
-    FASTflagger(infile=args.infile)
+    FASTRFIflag(infile=args.infile)
 
 if __name__ == "__main__":
     main()

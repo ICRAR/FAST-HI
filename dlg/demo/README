@@ -1,0 +1,15 @@
+To run the demo:
+
+ * Run the start_procs.sh script. That will start all required background
+   processes that are required by DALiuGE.
+ * Open your browser at localhost:8001 to see the web UI.
+ * Run the submit_demo_graph.sh script. That will send the demo graph to the
+   DALiuGE processes and run it. You should see the web UI update itself.
+ * Run the stop_procs.sh script to stop all background processes.
+
+To edit the logical graph:
+
+ * Run the start_lg_editor.sh script.
+ * Open your browser at localhost:8084
+ * Edit and save
+ * When finished, just stop the start_lg_editor.sh script with Ctrl-C

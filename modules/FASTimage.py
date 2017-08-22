@@ -26,17 +26,51 @@ FAST-HI Imaging module
 
 import os
 import sys
-import ConfigParser
 import argparse
 import casadef
 import time
+
+import utils
 
 module_name = 'FASTimage'
 
 #config file
 CONFIG_DEFAULT_FILE="../conf/image.conf"
-config = ConfigParser.RawConfigParser()
+config = utils.RawConfigParser()
 
+config.add_section('Common')
+config.set('Common', 'in_path', '')
+config.set('Common', 'out_path', '')
+
+config.add_section('Imaging')
+config.set('Imaging', 'outfile_ext', 'ms.imaging')
+config.set('Imaging', 'overwrite', 'False')
+config.set('Imaging', 'field', '')
+config.set('Imaging', 'spw', '')
+config.set('Imaging', 'antenna', '')
+config.set('Imaging', 'scan', '')
+config.set('Imaging', 'intent', 'OBSERVE_TARGET#ON_SOURCE')
+config.set('Imaging', 'mode', 'channel')
+config.set('Imaging', 'nchan', '-1')
+config.set('Imaging', 'start', '0')
+config.set('Imaging', 'width', '1')
+config.set('Imaging', 'veltype', 'radio')
+config.set('Imaging', 'outframe', '')
+config.set('Imaging', 'gridfunction', 'BOX')
+config.set('Imaging', 'convsupport', '-1')
+config.set('Imaging', 'truncate', '-1')
+config.set('Imaging', 'gwidth', '-1')
+config.set('Imaging', 'jwidth', '-1')
+config.set('Imaging', 'imsize', '[]')
+config.set('Imaging', 'cell', '')
+config.set('Imaging', 'phasecenter', '')
+config.set('Imaging', 'ephemsrcname', '')
+config.set('Imaging', 'pointingcolumn', 'direction')
+config.set('Imaging', 'restfreq', '')
+config.set('Imaging', 'stokes', '')
+config.set('Imaging', 'minweight', '0.1')
+config.set('Imaging', 'clipminmax', 'False')
+    
 sd.rcParams['verbose'] = True
 sd.rcParams['scantable.storage'] = 'memory'
 
@@ -80,7 +114,7 @@ def FASTimage(infile):
         truncate           = config.getfloat('Imaging', 'truncate'),
         gwidth             = config.getfloat('Imaging', 'gwidth'),
         jwidth             = config.getfloat('Imaging', 'jwidth'),
-        imsize             = config.get('Imaging', 'imsize'),
+        imsize             = config.getintlist('Imaging', 'imsize'),
         cell               = config.get('Imaging', 'cell'),
         phasecenter        = config.get('Imaging', 'phasecenter'),
         ephemsrcname       = config.get('Imaging', 'ephemsrcname'),
@@ -92,39 +126,6 @@ def FASTimage(infile):
     )
 
 def write_default_config():
-    config.add_section('Common')
-    config.set('Common', 'in_path', '')
-    config.set('Common', 'out_path', '')
-
-    config.add_section('Imaging')
-    config.set('Imaging', 'outfile_ext', 'ms.imaging')
-    config.set('Imaging', 'overwrite', 'False')
-    config.set('Imaging', 'field', '')
-    config.set('Imaging', 'spw', '')
-    config.set('Imaging', 'antenna', '')
-    config.set('Imaging', 'scan', '')
-    config.set('Imaging', 'intent', 'OBSERVE_TARGET#ON_SOURCE')
-    config.set('Imaging', 'mode', 'channel')
-    config.set('Imaging', 'nchan', '-1')
-    config.set('Imaging', 'start', '0')
-    config.set('Imaging', 'width', '1')
-    config.set('Imaging', 'veltype', 'radio')
-    config.set('Imaging', 'outframe', '')
-    config.set('Imaging', 'gridfunction', 'BOX')
-    config.set('Imaging', 'convsupport', '-1')
-    config.set('Imaging', 'truncate', '-1')
-    config.set('Imaging', 'gwidth', '-1')
-    config.set('Imaging', 'jwidth', '-1')
-    config.set('Imaging', 'imsize', '[]')
-    config.set('Imaging', 'cell', '')
-    config.set('Imaging', 'phasecenter', '')
-    config.set('Imaging', 'ephemsrcname', '')
-    config.set('Imaging', 'pointingcolumn', 'direction')
-    config.set('Imaging', 'restfreq', '')
-    config.set('Imaging', 'stokes', '')
-    config.set('Imaging', 'minweight', '0.1')
-    config.set('Imaging', 'clipminmax', 'False')
-
     # Writing our configuration file
     with open(CONFIG_DEFAULT_FILE, 'wb') as configfile:
         config.write(configfile)

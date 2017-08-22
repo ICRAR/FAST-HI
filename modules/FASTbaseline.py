@@ -26,17 +26,57 @@ FAST-HI Baseline subtraction module
 
 import os
 import sys
-import ConfigParser
 import argparse
 import casadef
 import time
+
+import utils
 
 module_name = 'FASTbaseline'
 
 #config file
 CONFIG_DEFAULT_FILE="../conf/baseline.conf"
-config = ConfigParser.RawConfigParser()
+config = utils.RawConfigParser()
+config.add_section('Common')
+config.set('Common', 'in_path', '')
+config.set('Common', 'out_path', '')
 
+config.add_section('Baseline')
+config.set('Baseline', 'datacolumn', 'corrected') 
+config.set('Baseline', 'antenna', '')
+config.set('Baseline', 'field', '')
+config.set('Baseline', 'spw', '')
+config.set('Baseline', 'timerange', '')
+config.set('Baseline', 'scan', '')
+config.set('Baseline', 'pol', '')
+config.set('Baseline', 'intent', '')
+config.set('Baseline', 'maskmode', 'auto')
+config.set('Baseline', 'thresh', '5.0')
+config.set('Baseline', 'avg_limit', '4')
+config.set('Baseline', 'minwidth', '4')
+config.set('Baseline', 'edge', '[0, 0]')
+config.set('Baseline', 'blmode', 'fit')
+config.set('Baseline', 'dosubtract', 'True')
+config.set('Baseline', 'blformat', 'text')
+config.set('Baseline', 'bloutput',  "")
+config.set('Baseline', 'bltable', "")
+config.set('Baseline', 'blfunc', "poly")
+config.set('Baseline', 'order', '1')
+config.set('Baseline', 'npiece', '2')
+config.set('Baseline', 'applyfft', 'True')
+config.set('Baseline', 'fftmethod', "fft")
+config.set('Baseline', 'fftthresh', '3.0')
+config.set('Baseline', 'addwn', '[0]')
+config.set('Baseline', 'rejwn', '[]')
+config.set('Baseline', 'clipthresh', '3.0')
+config.set('Baseline', 'clipniter', '0')
+config.set('Baseline', 'blparam', "")
+config.set('Baseline', 'verbose', 'False')
+config.set('Baseline', 'showprogress', 'False')
+config.set('Baseline', 'minnrow', '1000')
+config.set('Baseline', 'overwrite', 'False')         
+config.set('Baseline', 'outfile_ext', '.ms.baselined') 
+    
 sd.rcParams['verbose'] = True
 sd.rcParams['scantable.storage'] = 'memory'
 
@@ -71,7 +111,7 @@ def FASTbaseline(infile):
     thresh             = config.getfloat('Baseline', 'thresh'),
     avg_limit          = config.getint('Baseline', 'avg_limit'),
     minwidth           = config.getint('Baseline', 'minwidth'),
-#    edge               = config.set('Baseline', 'edge', '[0, 0]'),
+    edge               = config.getintlist('Baseline', 'edge'),
     blmode             = config.get('Baseline', 'blmode'),
     dosubtract         = config.getboolean('Baseline', 'dosubtract'),
     blformat           = config.get('Baseline', 'blformat'),
@@ -83,8 +123,8 @@ def FASTbaseline(infile):
     applyfft           = config.getboolean('Baseline', 'applyfft'),
     fftmethod          = config.get('Baseline', 'fftmethod'),
     fftthresh          = config.getfloat('Baseline', 'fftthresh'),
- #   addwn              = config.get('Baseline', 'addwn', '[0]'),
- #   rejwn              = config.get('Baseline', 'rejwn', '[]'),
+    addwn              = config.getfloatlist('Baseline', 'addwn'),
+    rejwn              = config.getfloatlist('Baseline', 'rejwn'),
     clipthresh         = config.getfloat('Baseline', 'clipthresh'),
     clipniter          = config.getint('Baseline', 'clipniter'),
     blparam            = config.get('Baseline', 'blparam'),
@@ -94,47 +134,7 @@ def FASTbaseline(infile):
     overwrite          = config.getboolean('Baseline', 'overwrite'), 
     outfile            = os.path.join(outpath, head + config.get('Baseline', 'outfile_ext')))
 
-def write_default_config():
-    config.add_section('Common')
-    config.set('Common', 'in_path', '')
-    config.set('Common', 'out_path', '')
-
-    config.add_section('Baseline')
-    config.set('Baseline', 'datacolumn', 'corrected') 
-    config.set('Baseline', 'antenna', '')
-    config.set('Baseline', 'field', '')
-    config.set('Baseline', 'spw', '')
-    config.set('Baseline', 'timerange', '')
-    config.set('Baseline', 'scan', '')
-    config.set('Baseline', 'pol', '')
-    config.set('Baseline', 'intent', '')
-    config.set('Baseline', 'maskmode', 'auto')
-    config.set('Baseline', 'thresh', '5.0')
-    config.set('Baseline', 'avg_limit', '4')
-    config.set('Baseline', 'minwidth', '4')
-    config.set('Baseline', 'edge', '[0, 0]')
-    config.set('Baseline', 'blmode', 'fit')
-    config.set('Baseline', 'dosubtract', 'True')
-    config.set('Baseline', 'blformat', 'text')
-    config.set('Baseline', 'bloutput',  "")
-    config.set('Baseline', 'bltable', "")
-    config.set('Baseline', 'blfunc', "poly")
-    config.set('Baseline', 'order', '1')
-    config.set('Baseline', 'npiece', '2')
-    config.set('Baseline', 'applyfft', 'True')
-    config.set('Baseline', 'fftmethod', "fft")
-    config.set('Baseline', 'fftthresh', '3.0')
-    config.set('Baseline', 'addwn', '[0]')
-    config.set('Baseline', 'rejwn', '[]')
-    config.set('Baseline', 'clipthresh', '3.0')
-    config.set('Baseline', 'clipniter', '0')
-    config.set('Baseline', 'blparam', "")
-    config.set('Baseline', 'verbose', 'False')
-    config.set('Baseline', 'showprogress', 'False')
-    config.set('Baseline', 'minnrow', '1000')
-    config.set('Baseline', 'overwrite', 'False')         
-    config.set('Baseline', 'outfile_ext', '.ms.baselined') 
-    
+def write_default_config():  
     # Writing our configuration file
     with open(CONFIG_DEFAULT_FILE, 'wb') as configfile:
         config.write(configfile)
