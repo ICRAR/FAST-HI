@@ -42,7 +42,7 @@ config.add_section('Common')
 config.set('Common', 'in_path', '')
 config.set('Common', 'out_path', '')
 
-config.add_section('RFIFlagging')
+config.add_section('Flagging')
 config.set('Flagging', 'outfile_ext', 'ms.flagging')
 config.set('Flagging', 'overwrite', 'False')
 config.set('Flagging', 'autocorr', 'False')
