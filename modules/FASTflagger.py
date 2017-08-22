@@ -216,7 +216,7 @@ def FASTflagger(infile):
         display=config.get('Flagging', 'display'),
         flagbackup=config.getboolean('Flagging', 'flagbackup'),
         savepars=config.getboolean('Flagging', 'savepars'),
-        cmdreason=config.get('Flagging', 'cmdreason'),
+        cmdreason=config.get('Flagging', 'cmdreason')
     )
 
 def write_default_config():

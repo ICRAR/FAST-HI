@@ -30,18 +30,19 @@ import ConfigParser
 import argparse
 import casadef
 import time
+import utils
 
 module_name = 'FASTRFIflag'
 
 # config file
 CONFIG_DEFAULT_FILE = "../conf/RFIflag.conf"
-config = ConfigParser.RawConfigParser()
+config = utils.RawConfigParser()
 
 config.add_section('Common')
 config.set('Common', 'in_path', '')
 config.set('Common', 'out_path', '')
 
-config.add_section('Flagging')
+config.add_section('RFIFlagging')
 config.set('Flagging', 'outfile_ext', 'ms.flagging')
 config.set('Flagging', 'overwrite', 'False')
 config.set('Flagging', 'autocorr', 'False')
@@ -126,7 +127,7 @@ def FASTRFIflag(infile):
         casalog.post('%s does not exist' % infile, priority="SEVERE")
         sys.exit()
 
-    casalog.post('Flagging for %s' % infile)
+    casalog.post(' RFI flagging for %s' % infile)
     # List the contents of the dataset
     listobs(vis=infile)
 
@@ -160,13 +161,13 @@ def FASTRFIflag(infile):
         array=config.get('Flagging', 'array'),
         observation=config.get('Flagging', 'observation'),
         feed=config.get('Flagging', 'feed'),
-        clipminmax=config.get('Flagging', 'clipminmax'),
+#        clipminmax=config.getfloatlist('Flagging', 'clipminmax'),
         datacolumn=config.get('Flagging', 'datacolumn'),
         clipoutside=config.getboolean('Flagging', 'clipoutside'),
         channelavg=config.getboolean('Flagging', 'channelavg'),
-        chanbin=config.getfloat('Flagging', 'chanbin'),
+        chanbin=config.getint('Flagging', 'chanbin'),
         timeavg=config.getboolean('Flagging', 'timeavg'),
-        timebin=config.getfloat('Flagging', 'timebin'),
+        timebin=config.get('Flagging', 'timebin'),
         clipzeros=config.getboolean('Flagging', 'clipzeros'),
         quackinterval=config.getfloat('Flagging', 'quackinterval'),
         quackmode=config.get('Flagging', 'quackmode'),
@@ -184,7 +185,7 @@ def FASTRFIflag(infile):
         maxnpieces=config.getint('Flagging', 'maxnpieces'),
         flagdimension=config.get('Flagging', 'flagdimension'),
         usewindowstats=config.get('Flagging', 'usewindowstats'),
-        halfwin=config.getfloat('Flagging', 'halfwin'),
+        halfwin=config.getint('Flagging', 'halfwin'),
         extendflags=config.getboolean('Flagging', 'extendflags'),
         winsize=config.getint('Flagging', 'winsize'),
         timedev=config.get('Flagging', 'timedev'),
@@ -204,8 +205,8 @@ def FASTRFIflag(infile):
         flagnearfreq=config.getboolean('Flagging', 'flagnearfreq'),
         minrel=config.getfloat('Flagging', 'minrel'),
         maxrel=config.getfloat('Flagging', 'maxrel'),
-        minabs=config.getfloat('Flagging', 'minabs'),
-        maxabs=config.getfloat('Flagging', 'maxabs'),
+        minabs=config.getint('Flagging', 'minabs'),
+        maxabs=config.getint('Flagging', 'maxabs'),
         spwchan=config.getboolean('Flagging', 'spwchan'),
         spwcorr=config.getboolean('Flagging', 'spwcorr'),
         basecnt=config.getboolean('Flagging', 'basecnt'),
@@ -215,7 +216,7 @@ def FASTRFIflag(infile):
         display=config.get('Flagging', 'display'),
         flagbackup=config.getboolean('Flagging', 'flagbackup'),
         savepars=config.getboolean('Flagging', 'savepars'),
-        cmdreason=config.get('Flagging', 'cmdreason'),
+        cmdreason=config.get('Flagging', 'cmdreason')
     )
 
 def write_default_config():
