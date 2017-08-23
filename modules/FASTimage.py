@@ -126,7 +126,7 @@ def FASTimage(infile):
     )
 
 def write_default_config():
-    # Writing our configuration file
+    # Writing out configuration file
     with open(CONFIG_DEFAULT_FILE, 'wb') as configfile:
         config.write(configfile)
     casalog.post('No configuration file found. Default configuration file has been created: ' + CONFIG_DEFAULT_FILE)
@@ -145,7 +145,7 @@ def main():
     args = parser.parse_args()
 
     casalog.post('---Logging for ' + module_name)
-    casalog.post('Command line:'+str(args))
+    casalog.post('Command line:' + str(args))
     casalog.post('CASA version: ' + casadef.casa_version)
 
     config_file = CONFIG_DEFAULT_FILE

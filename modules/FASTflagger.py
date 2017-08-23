@@ -220,7 +220,7 @@ def FASTflagger(infile):
     )
 
 def write_default_config():
-    # Writing our configuration file
+    # Writing out configuration file
     with open(CONFIG_DEFAULT_FILE, 'wb') as configfile:
         config.write(configfile)
     casalog.post('No configuration file found. Default configuration file has been created: ' + CONFIG_DEFAULT_FILE)

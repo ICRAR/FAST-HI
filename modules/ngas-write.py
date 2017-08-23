@@ -27,6 +27,6 @@ def write_to_ngas(config_file):
               (' '.join(cmd), e.returncode, e.output))
 
 parser = argparse.ArgumentParser()
-parser.add_argument('config_file', help="The configuration file for this module")
+parser.add_argument('--logfile', help="The configuration file for this module")
 args = parser.parse_args()
 write_to_ngas(args.config_file)
