@@ -5,7 +5,7 @@ this_dir="`dirname $0`"
 
 # Move to the directory where the python modules are
 # That way we can refer to them in the graph using simply their file basenames
-cd "$this_dir"/../../../modules
+cd "$this_dir"/../../modules
 
 # Start the Node Manager
 # -v 5 gives DEBUG output, lower values are less verbose
