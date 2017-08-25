@@ -60,7 +60,7 @@ config.set('Calibration', 'outfile_ext', '.ms.calibrated')
 sd.rcParams['verbose'] = True
 sd.rcParams['scantable.storage'] = 'memory'
 
-def FASTcal(infile):
+def FASTcal(infile, outfile):
 
     infile = os.path.normpath(os.path.join(config.get('Common', 'in_path'), infile))
     if not os.path.exists(infile):
@@ -75,6 +75,8 @@ def FASTcal(infile):
     default('sdcal')
 
     head, tail = os.path.splitext(os.path.basename(infile))
+    if not outfile:
+        outfile = os.path.join(outpath, head + config.get('Calibration', 'outfile_ext'))
     
     outpath = config.get('Common', 'out_path')
     if os.path.isdir(outpath) == False:
@@ -96,7 +98,7 @@ def FASTcal(infile):
         spw = config.get('Calibration', 'spw'),
         scan = config.get('Calibration', 'scan'),
         intent = config.get('Calibration', 'intent'),
-        outfile = os.path.join(outpath, head + config.get('Calibration', 'outfile_ext')),
+        outfile = outfile,
         overwrite = config.getboolean('Calibration', 'overwrite')
         )
 
@@ -115,7 +117,8 @@ def main():
     parser.add_argument("--logfile")
         
     parser.add_argument("--config", help="Configuration file for the spectral-line data reduction pipeline")
-    parser.add_argument("--infile", help="Uncalibrated observation data")
+    parser.add_argument("--infile", help="Observation measurement set")
+    parser.add_argument("--outfile", help="Intermidiate output measurement set")    
 
     args = parser.parse_args()
 
@@ -143,7 +146,7 @@ def main():
     if not args.infile:
         casalog.post('Infile must to be provided. Use --infile.', priority="SEVERE")
 
-    FASTcal(infile=args.infile)
+    FASTcal(infile=args.infile, outfile=args.outfile)
 
 if __name__ == "__main__":
     main()

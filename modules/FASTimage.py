@@ -140,7 +140,7 @@ def main():
     parser.add_argument("--logfile")
         
     parser.add_argument("--config", help="Configuration file for the spectral-line data reduction pipeline")
-    parser.add_argument("--infile", help="CaliFile with a list observation data")
+    parser.add_argument("--infile", help="Observation measurement set")
 
     args = parser.parse_args()
 
