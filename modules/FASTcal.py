@@ -31,6 +31,8 @@ import argparse
 import casadef
 import time
 
+import utils
+
 module_name = 'FASTcal'
 
 #config file
@@ -112,15 +114,10 @@ def write_default_config():
 def main():
 
     parser = argparse.ArgumentParser()
-    #cleans CASA arguments
-    parser.add_argument("-c")
-    parser.add_argument("--logfile")
-        
     parser.add_argument("--config", help="Configuration file for the spectral-line data reduction pipeline")
     parser.add_argument("--infile", help="Observation measurement set")
-    parser.add_argument("--outfile", help="Intermidiate output measurement set")    
-
-    args = parser.parse_args()
+    parser.add_argument("--outfile", help="Intermidiate output measurement set")
+    args = parser.parse_args(utils.cmdline_cleanup())
 
     casalog.post('---Logging for ' + module_name)
     casalog.post('Command line:' + str(args))

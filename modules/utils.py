@@ -1,6 +1,7 @@
 """Common utility routines used by the FAST pipeline modules"""
 
 import ConfigParser
+import sys
 
 # ConfigParser enhancements to get list of objects
 
@@ -27,3 +28,11 @@ class ListAwareMixIn(object):
 class RawConfigParser(ConfigParser.RawConfigParser, ListAwareMixIn): pass
 class ConfigParser(ConfigParser.ConfigParser, ListAwareMixIn): pass
 #class SafeConfigParser(ConfigParser.SafeConfigParser, ListAwareMixIn): pass
+
+# Command-line cleanup for modules invoked via casa -c "file"
+def cmdline_cleanup():
+    for i, arg in enumerate(sys.argv):
+        if arg == '-c':
+            i = i + 2
+            break
+    return sys.argv[i:]
