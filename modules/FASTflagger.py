@@ -136,7 +136,7 @@ def FASTflagger(infile):
     head, tail = os.path.splitext(os.path.basename(infile))
 
     outpath = config.get('Common', 'out_path')
-    if os.path.isdir(outpath) == False:
+    if outpath and not os.path.isdir(outpath):
         os.system('mkdir ' + outpath)
 
     ##########################
