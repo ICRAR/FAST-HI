@@ -5,7 +5,7 @@ import ConfigParser
 # ConfigParser enhancements to get list of objects
 
 def _list(s):
-    return map(lambda x: x.strip(), s.strip(' []').split(','))
+    return filter(None, map(lambda x: x.strip(), s.strip(' []').split(',')))
 
 def _intlist(s):
     return map(int, _list(s))
