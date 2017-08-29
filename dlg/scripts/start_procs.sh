@@ -48,4 +48,4 @@ dlg nm ${iface_spec} -vv -d
 # -N localhost makes it point to our Node Manager running on localhost
 # -d works as above
 # Use -v as above if required
-dlg dim ${iface_spec} -N localhost -d
+dlg dim ${iface_spec} -N localhost -v -d
