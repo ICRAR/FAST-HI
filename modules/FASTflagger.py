@@ -21,7 +21,7 @@
 #    MA 02111-1307  USA
 #
 """
-FAST-HI Imaging module
+FAST-HI flagging module
 """
 
 import os
@@ -38,10 +38,6 @@ module_name = 'FASTflagger'
 # config file
 CONFIG_DEFAULT_FILE = "../conf/flagger.conf"
 config = utils.RawConfigParser()
-
-config.add_section('Common')
-config.set('Common', 'in_path', '')
-config.set('Common', 'out_path', '')
 
 config.add_section('Flagging')
 config.set('Flagging', 'outfile_ext', 'ms.flagging')
@@ -122,29 +118,23 @@ config.set('Flagging', 'cmdreason', '')
 sd.rcParams['verbose'] = True
 sd.rcParams['scantable.storage'] = 'memory'
 
-def FASTflagger(infile):
+def FASTflagger(infile, outdir):
 
-    infile = os.path.normpath(os.path.join(config.get('Common', 'in_path'), infile))
-    if not os.path.exists(infile):
-        casalog.post('%s does not exist' % infile, priority="SEVERE")
-        sys.exit()
-
-    casalog.post('Flagging for %s' % infile)
+    casalog.post('Begin flagging for %s' % infile)
     # List the contents of the dataset
     listobs(vis=infile)
 
     head, tail = os.path.splitext(os.path.basename(infile))
 
-    outpath = config.get('Common', 'out_path')
-    if outpath and not os.path.isdir(outpath):
-        os.system('mkdir ' + outpath)
+    if outdir and not os.path.isdir(outdir):
+        os.system('mkdir ' + outdir)
 
     ##########################
     # Flag data
     ##########################
     flagdata(
         vis=infile,
-        outfile=os.path.join(outpath, head + config.get('Flagging', 'outfile_ext')),
+        outfile=os.path.join(outdir, head + config.get('Flagging', 'outfile_ext')),
         overwrite=config.getboolean('Flagging', 'overwrite'),
         mode=config.get('Flagging', 'mode'),
         autocorr=config.getboolean('Flagging', 'autocorr'),
@@ -162,7 +152,7 @@ def FASTflagger(infile):
         array=config.get('Flagging', 'array'),
         observation=config.get('Flagging', 'observation'),
         feed=config.get('Flagging', 'feed'),
-#        clipminmax=config.getfloatlist('Flagging', 'clipminmax'),
+        clipminmax=config.getfloatlist('Flagging', 'clipminmax'),
         datacolumn=config.get('Flagging', 'datacolumn'),
         clipoutside=config.getboolean('Flagging', 'clipoutside'),
         channelavg=config.getboolean('Flagging', 'channelavg'),
@@ -232,7 +222,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", help="Configuration file for the spectral-line data reduction pipeline")
     parser.add_argument("--infile", help="Observation measurement set")
-    parser.add_argument("--outfile", help="Intermidiate output measurement set")
+    parser.add_argument("--outdir", help="Output directory")
     args = parser.parse_args(utils.cmdline_cleanup())
 
     casalog.post('---Logging for ' + module_name)
@@ -245,21 +235,30 @@ def main():
             config_file = args.config
         else:
             casalog.post('Configuration ' + args.config + ' does not exist.', priority="SEVERE")
-            sys.exit()
+            sys.exit(1)
     else:
         if not os.path.isfile(config_file):
             write_default_config()
-            casalog.post('Check configuration and re-run the module.')
-            sys.exit()
+            casalog.post('No configuration found. Default configuration file has been created. Check configuration and re-run the module.', priority="SEVERE")
+            sys.exit(1)
 
     # read configuration file
     casalog.post('Using configuration from %s' % config_file)
     config.read(config_file)
 
     if not args.infile:
-        casalog.post('File with a list of measurementsets must to be provided. Use --infile.', priority="SEVERE")
+        casalog.post('Observation measurementset must be provided. Use --infile.', priority="SEVERE")
+        sys.exit(1)
+        
+    if not os.path.exists(args.infile):
+        casalog.post('Input data %s does not exist' % args.infile, priority="SEVERE")
+        sys.exit(1)
 
-    FASTflagger(infile=args.infile)
+    if not os.path.exists(args.outdir):
+        casalog.post('Output directory %s does not exist' % args.outdir, priority="SEVERE")
+        sys.exit(1)
+        
+    FASTflagger(infile=args.infile, outdir=args.outdir)
 
 if __name__ == "__main__":
     main()
