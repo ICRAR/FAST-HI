@@ -36,7 +36,7 @@ import utils
 module_name = 'FASTflagger'
 
 # config file
-CONFIG_DEFAULT_FILE = "../conf/flagger.conf"
+CONFIG_DEFAULT_FILE = "../conf/flagging.conf"
 config = utils.RawConfigParser()
 
 config.add_section('Flagging')
