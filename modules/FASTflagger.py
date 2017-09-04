@@ -126,9 +126,15 @@ def FASTflagger(infile, outdir):
 
     head, tail = os.path.splitext(os.path.basename(infile))
 
-    if outdir and not os.path.isdir(outdir):
-        os.system('mkdir ' + outdir)
-
+    outdir = os.path.join(outdir, head)
+    
+    try:
+        if not os.path.exists(outdir):
+            os.system('mkdir ' + outdir)
+    except:
+        casalog.post('Couyld not create output directory %s' % outdir, priority="SEVERE")
+        sys.exit(1)     
+        
     ##########################
     # Flag data
     ##########################
