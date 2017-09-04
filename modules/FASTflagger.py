@@ -132,7 +132,7 @@ def FASTflagger(infile, outdir):
         if not os.path.exists(outdir):
             os.system('mkdir ' + outdir)
     except:
-        casalog.post('Couyld not create output directory %s' % outdir, priority="SEVERE")
+        casalog.post('Could not create output directory %s' % outdir, priority="SEVERE")
         sys.exit(1)     
         
     ##########################
