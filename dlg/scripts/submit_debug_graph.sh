@@ -27,9 +27,6 @@ do
 		c)
 			CONFIG_DIR="$OPTARG"
 			;;
-		d)
-			DATA_DIR="$OPTARG"
-			;;
         f)
             IN_FILE="$OPTARG"
             ;;		
