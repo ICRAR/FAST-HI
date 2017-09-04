@@ -1,13 +1,12 @@
 #!/bin/bash
 
 function print_usage {
-	echo "$0 [-h | -?] [-c <config_dir>] [-d <data_dir>]"
+	echo "$0 [-h | -?] [-c <config_dir>] [-f <in_file>]  [-o <out_dir>]"
 	echo
 	echo "-h, -?: Show this help"
 	echo "-c <config_dir>: Provide a directory with all configuration files"
-	echo "-d <input_data_dir>: Provide a directory containing the observation"
-	echo "-f <observation>: Provide the observation file name"
-    echo "-o <data_dir>: Provide a directory for the output"
+	echo "-f <in_file>: Provide the observation file name"
+    echo "-o <out_dir>: Provide a directory for the output"
 }
 
 # Where are we?
@@ -21,7 +20,7 @@ lg_file="$lg_dir"/debug/cal_nongas.json
 DATA_DIR=.
 CONFIG_DIR="$this_dir"/../../conf
 
-while getopts "c:d:h?" opt
+while getopts "c:f:o:h?" opt
 do
 	case "$opt" in
 		c)
