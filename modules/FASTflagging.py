@@ -33,7 +33,7 @@ import time
 
 import utils
 
-module_name = 'FASTflagger'
+module_name = 'FASTflagging'
 
 # config file
 CONFIG_DEFAULT_FILE = "../conf/flagging.conf"
@@ -41,7 +41,7 @@ config = utils.RawConfigParser()
 
 config.add_section('Flagging')
 config.set('Flagging', 'outfile_ext', 'ms.flagging')
-config.set('Flagging', 'overwrite', 'False')
+config.set('Flagging', 'overwrite', 'True')
 config.set('Flagging', 'mode', 'manual')
 config.set('Flagging', 'autocorr', 'False')
 config.set('Flagging', 'inpfile', '')
