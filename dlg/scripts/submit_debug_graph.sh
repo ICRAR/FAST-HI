@@ -6,7 +6,7 @@ function print_usage {
 	echo "-h, -?: Show this help"
 	echo "-c <config_dir>: Provide a directory with all configuration files"
 	echo "-f <in_file>: Provide the observation file name"
-    echo "-o <out_dir>: Provide a directory for the output"
+	echo "-o <out_dir>: Provide a directory for the output"
 }
 
 # Where are we?
@@ -17,7 +17,8 @@ lg_dir="$this_dir"/../logical_graphs
 lg_file="$lg_dir"/debug/cal_nongas.json
 
 # Handle command-line arguments
-DATA_DIR=.
+IN_FILE=input.ms
+OUT_DIR=.
 CONFIG_DIR="$this_dir"/../../conf
 
 while getopts "c:f:o:h?" opt
@@ -26,12 +27,12 @@ do
 		c)
 			CONFIG_DIR="$OPTARG"
 			;;
-        f)
-            IN_FILE="$OPTARG"
-            ;;		
-        o)
-            OUT_DIR="$OPTARG"
-            ;;            	
+		f)
+			IN_FILE="$OPTARG"
+			;;
+		o)
+			OUT_DIR="$OPTARG"
+			;;
 		[h?])
 			print_usage
 			exit 0
