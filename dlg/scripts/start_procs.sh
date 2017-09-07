@@ -42,10 +42,10 @@ cd "$this_dir"/../../modules
 # Start the Node Manager
 # -vv gives DEBUG output. More v is more verbose. Use "-q" for quiteness
 # -d starts the process as a daemon, can be stopped via -s later on
-dlg nm ${iface_spec} -vv -d --cwd
+dlg nm ${iface_spec} -vv -d --cwd || echo "Failed to start the DALiuGE Node Manager daemon"
 
 # Start the Data Island Manager
 # -N localhost makes it point to our Node Manager running on localhost
 # -d works as above
 # Use -v as above if required
-dlg dim ${iface_spec} -N localhost -v -d --cwd
+dlg dim ${iface_spec} -N localhost -v -d --cwd || echo "Failed to start the DALiuGE Data Island Manager daemon"
