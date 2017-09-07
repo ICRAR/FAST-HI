@@ -43,8 +43,10 @@ do
 	esac
 done
 
+now="$(date -u +%F_%T)"
+
 # Replace the placeholder variables (i.e., transition from a Logical Graph
 # Template into a Logical Graph).
 # Then translate into a physical graph template, partition, etc, and finally submit
 sed "s|\${CONFIG_DIR}|${CONFIG_DIR}|g; s|\${DATA_DIR}|${DATA_DIR}|g; s|\${OBS_NAME}|${OBS_NAME}|g" "$lg_file" \
-	| dlg unroll-and-partition | dlg map | dlg submit
+	| dlg unroll-and-partition | dlg map | dlg submit -s "${OBS_NAME}_${now}"
