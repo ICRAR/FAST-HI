@@ -21,7 +21,7 @@ OBS_NAME=observation
 DATA_DIR=.
 CONFIG_DIR="$this_dir"/../../conf
 
-while getopts "c:f:o:h?" opt
+while getopts "c:d:o:h?" opt
 do
 	case "$opt" in
 		c)
