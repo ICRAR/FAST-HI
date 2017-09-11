@@ -32,15 +32,11 @@ import time
 
 import utils
 
-module_name = 'FASTimage'
+module_name = 'FASTimaging'
 
 #config file
-CONFIG_DEFAULT_FILE="../conf/image.conf"
+CONFIG_DEFAULT_FILE="../conf/imaging.conf"
 config = utils.RawConfigParser()
-
-config.add_section('Common')
-config.set('Common', 'in_path', '')
-config.set('Common', 'out_path', '')
 
 config.add_section('Imaging')
 config.set('Imaging', 'outfile_ext', 'ms.imaging')
@@ -74,14 +70,14 @@ config.set('Imaging', 'clipminmax', 'False')
 sd.rcParams['verbose'] = True
 sd.rcParams['scantable.storage'] = 'memory'
 
-def FASTimage(infile):
+def FASTimage(infiles, outfile):
 
     infile = os.path.normpath(os.path.join(config.get('Common', 'in_path'), infile))
     if not os.path.exists(infile):
         casalog.post('%s does not exist' % infile, priority="SEVERE")
         sys.exit()
 
-    casalog.post('Imaging for %s' % infile)
+    casalog.post('Imaging for %s' % infiles)
     # List the contents of the dataset
     listobs(vis=infile)
     
@@ -95,8 +91,8 @@ def FASTimage(infile):
     # Perform imaging
     ##########################
     sdimaging(
-        infiles  = [infile],
-        outfile            = os.path.join(outpath, head + config.get('Imaging', 'outfile_ext')),
+        infiles            = infiles,
+        outfile            = outfile,
         overwrite          = config.getboolean('Imaging', 'overwrite'),
         field              = config.get('Imaging', 'field'),
         spw                = config.get('Imaging', 'spw'),
@@ -135,8 +131,9 @@ def write_default_config():
 def main():
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", help="Configuration file for the spectral-line data reduction pipeline")
-    parser.add_argument("--infile", help="Observation measurement set")
+    parser.add_argument("--config", help="Configuration file for imaging")
+    parser.add_argument("--infiles", help="List of calibrated measurement sets")
+    parser.add_argument("--outfile", help="Output image")
     args = parser.parse_args(utils.cmdline_cleanup())
 
     casalog.post('---Logging for ' + module_name)
@@ -160,10 +157,12 @@ def main():
     casalog.post('Using configuration from %s' % config_file)
     config.read(config_file)
 
-    if not args.infile:
-        casalog.post('File with a list of measurementsets must to be provided. Use --infile.', priority="SEVERE")
-
-    FASTimage(infile=args.infile)
+    if not args.infiles:
+        casalog.post('List of calibrated measurementsets must to be provided. Use --infiles.', priority="SEVERE")
+    if not args.outfile:
+        casalog.post('Output image file must to be provided. Use --outfile.', priority="SEVERE")
+        
+    FASTimage(infiles=args.infiles, outfiles=args.outfile)
 
 if __name__ == "__main__":
     main()
