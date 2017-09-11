@@ -38,11 +38,6 @@ module_name = 'FASTcal'
 #config file
 CONFIG_DEFAULT_FILE="../conf/calibr.conf"
 config = ConfigParser.RawConfigParser()
-
-config.add_section('Common')
-config.set('Common', 'in_path', '')
-config.set('Common', 'out_path', '')
-
 config.add_section('Calibration')
 config.set('Calibration', 'calmode', 'otfraster') 
 config.set('Calibration', 'fraction', '10%')
@@ -57,32 +52,18 @@ config.set('Calibration', 'field', '')
 config.set('Calibration', 'spw', '')
 config.set('Calibration', 'scan', '')
 config.set('Calibration', 'intent', 'OBSERVE_TARGET#ON_SOURCE')
-config.set('Calibration', 'outfile_ext', '.ms.calibrated')
     
 sd.rcParams['verbose'] = True
 sd.rcParams['scantable.storage'] = 'memory'
 
 def FASTcal(infile, outfile):
 
-    infile = os.path.normpath(os.path.join(config.get('Common', 'in_path'), infile))
-    if not os.path.exists(infile):
-        casalog.post('%s does not exist' % infile, priority="SEVERE")
-        sys.exit()
-
     casalog.post('Calibration for %s' % infile)
     # List the contents of the dataset
     listobs(vis=infile)
-    
+
     #initialise
     default('sdcal')
-
-    head, tail = os.path.splitext(os.path.basename(infile))
-    if not outfile:
-        outfile = os.path.join(outpath, head + config.get('Calibration', 'outfile_ext'))
-    
-    outpath = config.get('Common', 'out_path')
-    if os.path.isdir(outpath) == False:
-        os.system('mkdir ' + outpath)
 
     ##########################
     # Calibrate data
@@ -140,8 +121,7 @@ def main():
     casalog.post('Using configuration from %s' % config_file)
     config.read(config_file)
 
-    if not args.infile:
-        casalog.post('Infile must to be provided. Use --infile.', priority="SEVERE")
+    utils.check_ioargs(args, casalog)
 
     FASTcal(infile=args.infile, outfile=args.outfile)
 
