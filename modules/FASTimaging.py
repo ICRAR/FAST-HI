@@ -39,7 +39,6 @@ CONFIG_DEFAULT_FILE="../conf/imaging.conf"
 config = utils.RawConfigParser()
 
 config.add_section('Imaging')
-config.set('Imaging', 'outfile_ext', 'ms.imaging')
 config.set('Imaging', 'overwrite', 'False')
 config.set('Imaging', 'field', '')
 config.set('Imaging', 'spw', '')
@@ -72,20 +71,11 @@ sd.rcParams['scantable.storage'] = 'memory'
 
 def FASTimage(infiles, outfile):
 
-    infile = os.path.normpath(os.path.join(config.get('Common', 'in_path'), infile))
-    if not os.path.exists(infile):
-        casalog.post('%s does not exist' % infile, priority="SEVERE")
-        sys.exit()
-
     casalog.post('Imaging for %s' % infiles)
-    # List the contents of the dataset
-    listobs(vis=infile)
-    
-    head, tail = os.path.splitext(os.path.basename(infile))
-    
-    outpath = config.get('Common', 'out_path')
-    if os.path.isdir(outpath) == False:
-        os.system('mkdir ' + outpath)
+
+    # List the contents of the datasets
+    for infile in infiles:
+        listobs(vis=infile)
 
     ##########################
     # Perform imaging
@@ -157,12 +147,9 @@ def main():
     casalog.post('Using configuration from %s' % config_file)
     config.read(config_file)
 
-    if not args.infiles:
-        casalog.post('List of calibrated measurementsets must to be provided. Use --infiles.', priority="SEVERE")
-    if not args.outfile:
-        casalog.post('Output image file must to be provided. Use --outfile.', priority="SEVERE")
-        
-    FASTimage(infiles=args.infiles, outfiles=args.outfile)
+    utils.check_ioargs(args, casalog, infiles=True)
+
+    FASTimage(infiles=args.infiles, outfile=args.outfile)
 
 if __name__ == "__main__":
     main()
