@@ -40,7 +40,6 @@ CONFIG_DEFAULT_FILE = "../conf/flagging.conf"
 config = utils.RawConfigParser()
 
 config.add_section('Flagging')
-config.set('Flagging', 'outfile_ext', 'ms.flagging')
 config.set('Flagging', 'overwrite', 'True')
 config.set('Flagging', 'mode', 'manual')
 config.set('Flagging', 'autocorr', 'False')
@@ -118,29 +117,18 @@ config.set('Flagging', 'cmdreason', '')
 sd.rcParams['verbose'] = True
 sd.rcParams['scantable.storage'] = 'memory'
 
-def FASTflagger(infile, outdir):
+def FASTflagger(infile, outfile):
 
     casalog.post('Begin flagging for %s' % infile)
     # List the contents of the dataset
     listobs(vis=infile)
 
-    head, tail = os.path.splitext(os.path.basename(infile))
-
-    outdir = os.path.join(outdir, head)
-    
-    try:
-        if not os.path.exists(outdir):
-            os.system('mkdir ' + outdir)
-    except:
-        casalog.post('Could not create output directory %s' % outdir, priority="SEVERE")
-        sys.exit(1)     
-        
     ##########################
     # Flag data
     ##########################
     flagdata(
         vis=infile,
-        outfile=os.path.join(outdir, head + config.get('Flagging', 'outfile_ext')),
+        outfile=outfile,
         overwrite=config.getboolean('Flagging', 'overwrite'),
         mode=config.get('Flagging', 'mode'),
         autocorr=config.getboolean('Flagging', 'autocorr'),
@@ -228,7 +216,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", help="Configuration file for the spectral-line data reduction pipeline")
     parser.add_argument("--infile", help="Observation measurement set")
-    parser.add_argument("--outdir", help="Output directory")
+    parser.add_argument("--outfile", help="Output MS")
     args = parser.parse_args(utils.cmdline_cleanup())
 
     casalog.post('---Logging for ' + module_name)
@@ -252,19 +240,9 @@ def main():
     casalog.post('Using configuration from %s' % config_file)
     config.read(config_file)
 
-    if not args.infile:
-        casalog.post('Observation measurementset must be provided. Use --infile.', priority="SEVERE")
-        sys.exit(1)
-        
-    if not os.path.exists(args.infile):
-        casalog.post('Input data %s does not exist' % args.infile, priority="SEVERE")
-        sys.exit(1)
+    utils.check_ioargs(args, casalog)
 
-    if not os.path.exists(args.outdir):
-        casalog.post('Output directory %s does not exist' % args.outdir, priority="SEVERE")
-        sys.exit(1)
-        
-    FASTflagger(infile=args.infile, outdir=args.outdir)
+    FASTflagger(infile=args.infile, outfile=args.outfile)
 
 if __name__ == "__main__":
     main()
