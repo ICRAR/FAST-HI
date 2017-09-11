@@ -37,10 +37,6 @@ module_name = 'FASTbaseline'
 #config file
 CONFIG_DEFAULT_FILE="../conf/baseline.conf"
 config = utils.RawConfigParser()
-config.add_section('Common')
-config.set('Common', 'in_path', '')
-config.set('Common', 'out_path', '')
-
 config.add_section('Baseline')
 config.set('Baseline', 'datacolumn', 'corrected') 
 config.set('Baseline', 'antenna', '')
@@ -74,26 +70,14 @@ config.set('Baseline', 'blparam', "")
 config.set('Baseline', 'verbose', 'False')
 config.set('Baseline', 'showprogress', 'False')
 config.set('Baseline', 'minnrow', '1000')
-config.set('Baseline', 'overwrite', 'True')         
-config.set('Baseline', 'outfile_ext', '.ms.baselined') 
+config.set('Baseline', 'overwrite', 'True') 
     
 sd.rcParams['verbose'] = True
 sd.rcParams['scantable.storage'] = 'memory'
 
-def FASTbaseline(infile):
-
-    infile = os.path.normpath(os.path.join(config.get('Common', 'in_path'), infile))
-    if not os.path.exists(infile):
-        casalog.post('%s does not exist' % infile, priority="SEVERE")
-        sys.exit()
+def FASTbaseline(infile, outfile):
 
     casalog.post('Baseline subtraction for %s' % infile)
-    
-    head, tail = os.path.splitext(os.path.basename(infile))
-    
-    outpath = config.get('Common', 'out_path')
-    if os.path.isdir(outpath) == False:
-        os.system('mkdir ' + outpath)
 
     ##########################
     # Fit and remove the baseline
@@ -132,7 +116,7 @@ def FASTbaseline(infile):
     showprogress       = config.getboolean('Baseline', 'showprogress'),
     minnrow            = config.getint('Baseline', 'minnrow'),
     overwrite          = config.getboolean('Baseline', 'overwrite'), 
-    outfile            = os.path.join(outpath, head + config.get('Baseline', 'outfile_ext')))
+    outfile            = outfile)
 
 def write_default_config():  
     # Writing out configuration file
@@ -170,10 +154,9 @@ def main():
     casalog.post('Using configuration from %s' % config_file)
     config.read(config_file)
 
-    if not args.infile:
-        casalog.post('Infile must to be provided. Use --infile.', priority="SEVERE")
+    utils.check_ioargs(args, casalog)
 
-    FASTbaseline(infile=args.infile)
+    FASTbaseline(infile=args.infile, outfile=args.outfile)
 
 if __name__ == "__main__":
     main()
