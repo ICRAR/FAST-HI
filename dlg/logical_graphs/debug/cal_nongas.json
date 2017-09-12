@@ -15,7 +15,7 @@
 {"category":"file", "text":"Image", "data_volume":5, "group_end":0, "check_filepath_exists":"0", "filepath":"${DATA_DIR}/${OBS_NAME}.imaging.ms", "dirname":"", "key":-16, "loc":"241.6718750000001 511.0000000000002"},
 {"category":"file", "text":"Observation MS", "data_volume":5, "group_end":0, "check_filepath_exists":"0", "filepath":"${DATA_DIR}/${OBS_NAME}.ms", "dirname":"", "key":-20, "loc":"-158.3281250000001 36.00000000000006"},
 {"category":"file", "text":"flagging.conf", "data_volume":5, "group_end":0, "check_filepath_exists":"1", "filepath":"${CONFIG_DIR}/flagging.conf", "dirname":"", "key":-24, "loc":"81.67187499999994 -384.9999999999999"},
-{"category":"file", "text":"RFIflaging.conf", "data_volume":5, "group_end":0, "check_filepath_exists":"1", "filepath":"${CONFIG_DIR}/RFIflag.conf", "dirname":"", "key":-25, "loc":"81.67187500000006 -225.99999999999997"},
+{"category":"file", "text":"RFIflaging.conf", "data_volume":5, "group_end":0, "check_filepath_exists":"1", "filepath":"${CONFIG_DIR}/RFIflagging.conf", "dirname":"", "key":-25, "loc":"81.67187500000006 -225.99999999999997"},
 {"category":"file", "text":"baseline.conf", "data_volume":5, "group_end":0, "check_filepath_exists":"1", "filepath":"${CONFIG_DIR}/baseline.conf", "dirname":"", "key":-26, "loc":"78.671875 118.00000000000003"},
 {"category":"file", "text":"imaging.conf", "data_volume":5, "group_end":0, "check_filepath_exists":"1", "filepath":"${CONFIG_DIR}/imaging.conf", "dirname":"", "key":-27, "loc":"77.67187500000006 326.0000000000001"},
 {"category":"file", "text":"Log", "data_volume":5, "group_end":0, "check_filepath_exists":"0", "filepath":"${DATA_DIR}/${OBS_NAME}.log", "dirname":"", "key":-30, "loc":"513.671875 36.000000000000114"}
