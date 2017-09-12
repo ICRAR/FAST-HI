@@ -1,12 +1,12 @@
 #!/bin/bash
 
 function print_usage {
-	echo "$0 [-h | -?] [-c <config_dir>] [-f <in_file>]  [-o <out_dir>]"
+	echo "$0 [-h | -?] [-c <config_dir>] [-d <data_dir>]  [-o <obs_name>]"
 	echo
 	echo "-h, -?: Show this help"
 	echo "-c <config_dir>:  Provide the directory with all configuration files"
 	echo "-d <data_dir>:    Provide the directory where all the data resides (or will reside)"
-	echo "-o <observation>: Provide the observation name (used to calculate filenames)"
+	echo "-o <obs_name>: Provide the observation name"
 }
 
 # Where are we?
