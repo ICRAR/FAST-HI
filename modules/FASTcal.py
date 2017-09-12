@@ -76,7 +76,7 @@ def FASTcal(infile, outfile):
         elongated = config.getboolean('Calibration', 'elongated'),
         applytable = config.get('Calibration', 'applytable'),
         interp = config.get('Calibration', 'interp'),
-#        spwmap = config.get('Calibration', 'spwmap'),
+        spwmap = config.get('Calibration', 'spwmap'),
         field = config.get('Calibration', 'field'),
         spw = config.get('Calibration', 'spw'),
         scan = config.get('Calibration', 'scan'),
