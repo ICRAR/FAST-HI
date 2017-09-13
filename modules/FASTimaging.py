@@ -71,6 +71,8 @@ sd.rcParams['scantable.storage'] = 'memory'
 
 def FASTimage(infiles, outfile):
 
+    infiles = infiles.split(',')
+
     casalog.post('Imaging for %s' % infiles)
 
     # List the contents of the datasets

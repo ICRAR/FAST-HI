@@ -55,7 +55,7 @@ def check_ioargs(args, casalog, infiles=False):
 
     # Input files should exist
     try:
-        infiles = args.infiles
+        infiles = args.infiles.split(',')
     except AttributeError:
         infiles = [args.infile]
 
