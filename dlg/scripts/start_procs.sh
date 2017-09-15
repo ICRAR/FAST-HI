@@ -1,20 +1,20 @@
 #!/bin/bash
 
 function print_usage {
-	echo "$0 [-h | -?] [-A]"
+	echo "$0 [-h | -?] [-L]"
 	echo
 	echo "-h, -?: Show this help"
-	echo "-A: Expose the manager processes through all network interfaces"
+	echo "-L: Expose the manager processes through the loopback network interface only"
 }
 
 # Handle command-line arguments
-ALL_IFACES=no
+ALL_IFACES=yes
 
-while getopts "Ah?" opt
+while getopts "Lh?" opt
 do
 	case "$opt" in
-		A)
-			ALL_IFACES=yes
+		L)
+			ALL_IFACES=no
 			;;
 		[h?])
 			print_usage
