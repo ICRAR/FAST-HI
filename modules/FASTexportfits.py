@@ -58,7 +58,7 @@ def FASTexportfits(imagename, fitsimage):
 
     casalog.post('FITS export for %s' % imagename)
 
-    sdexportfits(imagename  = imagename,
+    exportfits(imagename  = imagename,
                  fitsimage  = fitsimage,
                  velocity   = config.getboolean('ExportFITS', 'velocity'), 
                  optical    = config.getboolean('ExportFITS', 'optical', 'False'),
