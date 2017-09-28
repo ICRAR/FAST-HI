@@ -2,7 +2,7 @@ To run the pipeline:
 
  * Run the start_procs.sh script. That will start all required background
    processes that are required by DALiuGE.
-   * Run with the -A option to bind the processes to all network interfaces
+   * Use -L option to bind the processes to all the local interface only
  * Open your browser at localhost:8001 to see the web UI.
  * Run the submit_demo_graph.sh script. That will send the demo graph to the
    DALiuGE processes and run it. You should see the web UI update itself.
