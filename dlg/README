@@ -7,7 +7,7 @@ To run the pipeline:
  * Run the submit_demo_graph.sh script. That will send the demo graph to the
    DALiuGE processes and run it. You should see the web UI update itself.
    * Use the -d and -c options to specify the root directory where data will be
-     found, and where the configuration files can be found, respectivelly.
+     found, and where the configuration files can be found, respectively.
  * Run the stop_procs.sh script to stop all background processes.
 
 To edit the logical graph:
